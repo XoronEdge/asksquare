@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quizzifire_api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db    
+    env_file: 
+      - ./.env
+
+  db:
+    image: postgres
+    container_name: quizzifirepostgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB="${DBNAME}"
+      - POSTGRES_USER="${DBUSER}"
+      - POSTGRES_PASSWORD="${DBPASS}"
+      - DATABASE_HOST="${DBHOST}"
+ 
