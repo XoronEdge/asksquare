@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM golang:alpine as builder
 
 WORKDIR /build
 # . is our WORKDIR
@@ -14,13 +14,11 @@ COPY . .
 
 RUN go build  cmd/main.go
 
+
+FROM alpine:latest  
 WORKDIR /dist
-
-
-COPY .env .
-RUN ls
-
-RUN cp /build/main  .
+# COPY .env .
+COPY --from=builder /build/main .
 
 EXPOSE 4000
 
