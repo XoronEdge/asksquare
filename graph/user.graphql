@@ -1,0 +1,14 @@
+type User {
+  id: ID!
+  username: String!
+  email: String!
+
+  meetups: [Meetup!]!
+}
+
+
+input NewUser {
+  name: String!
+  description: String!
+}
+

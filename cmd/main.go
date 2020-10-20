@@ -5,6 +5,9 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/XoronEdge/quizzifire/graph"
+	"github.com/XoronEdge/quizzifire/graph/generated"
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 	"gorm.io/driver/postgres"
@@ -36,6 +39,16 @@ func main() {
 
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
+	})
+
+	// e.POST("/", playground.Handler("GraphQL playground", "/query"))
+	// http.Handle("/query", srv)
+
+	e.POST("/graphql", func(c echo.Context) error {
+		srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+		srv.ServeHTTP(c.Response(), c.Request())
+
+		return nil
 	})
 	log.Fatal(e.Start(viper.GetString("ADDRESS")))
 
