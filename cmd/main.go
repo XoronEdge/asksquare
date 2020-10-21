@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/XoronEdge/quizzifire/graph"
 	"github.com/XoronEdge/quizzifire/graph/generated"
 	"github.com/labstack/echo/v4"
@@ -37,19 +38,23 @@ func main() {
 
 	e := echo.New()
 
+	graphqlHandler := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+	playgroundHandler := playground.Handler("GraphQL", "/query")
+
+	e.POST("/query", func(c echo.Context) error {
+		graphqlHandler.ServeHTTP(c.Response(), c.Request())
+		return nil
+	})
+
+	e.GET("/playground", func(c echo.Context) error {
+		playgroundHandler.ServeHTTP(c.Response(), c.Request())
+		return nil
+	})
+
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	// e.POST("/", playground.Handler("GraphQL playground", "/query"))
-	// http.Handle("/query", srv)
-
-	e.POST("/graphql", func(c echo.Context) error {
-		srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
-		srv.ServeHTTP(c.Response(), c.Request())
-
-		return nil
-	})
 	log.Fatal(e.Start(viper.GetString("ADDRESS")))
 
 }
