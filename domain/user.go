@@ -17,7 +17,7 @@ type User struct {
 	Gender       string         `gorm:"-" json:"gender" validate:"min=3" `
 	Firstname    string         `gorm:"-" json:"firstname" validate:"min=3" `
 	Lastname     string         `gorm:"-" json:"lastname" validate:"min=3" `
-	Phone        string         `gorm:"-" json:"phone" validate:"required,min=7" `
+	Phone        string         `json:"phone" validate:"required,min=7" `
 	CreatedAt    time.Time      `json:"created_at"`
 	UpdatedAt    time.Time      `json:"updated_at"`
 	DeletedAt    gorm.DeletedAt `gorm:"index" json:"deleted_at"`

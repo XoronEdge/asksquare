@@ -21,7 +21,7 @@ type NewUser struct {
 	Firstname *string `json:"firstname"`
 	Lastname  *string `json:"lastname"`
 	Gender    *string `json:"gender"`
-	Phone     int     `json:"phone"`
+	Phone     string  `json:"phone"`
 	Password  string  `json:"password"`
 }
 
@@ -32,6 +32,6 @@ type User struct {
 	Firstname *string `json:"firstname"`
 	Lastname  *string `json:"lastname"`
 	Gender    *string `json:"gender"`
-	Phone     int     `json:"phone"`
+	Phone     string  `json:"phone"`
 	Password  string  `json:"password"`
 }

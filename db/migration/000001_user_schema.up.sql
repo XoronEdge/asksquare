@@ -13,6 +13,3 @@ CREATE TABLE "users" (
     "updated_at" TIMESTAMPTZ,
     "deleted_at" TIMESTAMPTZ
 );
-
-CREATE UNIQUE INDEX idx_users_username ON users(username);
-CREATE UNIQUE INDEX idx_users_email ON users(email);

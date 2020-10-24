@@ -5,7 +5,7 @@ type User {
   firstname: String
   lastname: String
   gender: String
-  phone: Int!
+  phone: String!
   password: String!
   # meetups: [Meetup!]!
 }
@@ -18,7 +18,7 @@ input NewUser {
   firstname: String
   lastname: String
   gender: String
-  phone: Int!
+  phone: String!
   password: String!
 }
 

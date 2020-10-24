@@ -6,7 +6,7 @@ require (
 	github.com/99designs/gqlgen v0.13.0
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
-	github.com/go-playground/validator/v10 v10.4.1 // indirect
+	github.com/go-playground/validator/v10 v10.4.1
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.1.17
 	github.com/leodido/go-urn v1.2.0 // indirect
