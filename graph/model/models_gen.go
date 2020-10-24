@@ -33,4 +33,5 @@ type User struct {
 	Lastname  *string `json:"lastname"`
 	Gender    *string `json:"gender"`
 	Phone     int     `json:"phone"`
+	Password  string  `json:"password"`
 }

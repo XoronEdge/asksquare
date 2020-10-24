@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -40,9 +41,9 @@ func main() {
 
 	e := echo.New()
 	ur := userRepo.NewUserRepo(dbConn)
-	uc := userUsecase.NewUserUsecase(ur)
+	uc := userUsecase.NewUserUsecase(ur, time.Minute)
 
-	graphqlHandler := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{uc}}))
+	graphqlHandler := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{Uc: &uc}}))
 	playgroundHandler := playground.Handler("GraphQL", "/query")
 
 	e.POST("/query", func(c echo.Context) error {

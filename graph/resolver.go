@@ -8,6 +8,7 @@ import (
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 
+//Resolver ...
 type Resolver struct {
-	uc domain.UserUsecase
+	Uc *domain.UserUsecase
 }

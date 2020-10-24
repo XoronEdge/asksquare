@@ -47,7 +47,7 @@ func (u *userUsercase) Store(c context.Context, user *domain.User) (err error) {
 	defer cancel()
 	user.HashPassword = user.Password
 
-	if ok, err := isRequestValid(&user); !ok {
+	if ok, err := isRequestValid(user); !ok {
 		return err
 	}
 	err = u.userRepo.Store(ctx, user)
@@ -73,7 +73,7 @@ func (u *userUsercase) Update(c context.Context, user *domain.User) (err error) 
 	ctx, cancel := context.WithTimeout(c, u.contextTimeout)
 	defer cancel()
 	user.HashPassword = user.Password
-	if ok, err := isRequestValid(&user); !ok {
+	if ok, err := isRequestValid(user); !ok {
 		return err
 	}
 	err = u.userRepo.Update(ctx, user)
