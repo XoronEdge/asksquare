@@ -15,13 +15,22 @@ type NewMeetup struct {
 }
 
 type NewUser struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
+	ID        string  `json:"id"`
+	Username  string  `json:"username"`
+	Email     string  `json:"email"`
+	Firstname *string `json:"firstname"`
+	Lastname  *string `json:"lastname"`
+	Gender    *string `json:"gender"`
+	Phone     int     `json:"phone"`
+	Password  string  `json:"password"`
 }
 
 type User struct {
-	ID       string    `json:"id"`
-	Username string    `json:"username"`
-	Email    string    `json:"email"`
-	Meetups  []*Meetup `json:"meetups"`
+	ID        string  `json:"id"`
+	Username  string  `json:"username"`
+	Email     string  `json:"email"`
+	Firstname *string `json:"firstname"`
+	Lastname  *string `json:"lastname"`
+	Gender    *string `json:"gender"`
+	Phone     int     `json:"phone"`
 }

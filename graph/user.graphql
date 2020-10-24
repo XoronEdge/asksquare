@@ -2,13 +2,22 @@ type User {
   id: ID!
   username: String!
   email: String!
-
-  meetups: [Meetup!]!
+  firstname: String
+  lastname: String
+  gender: String
+  phone: Int!
+  # meetups: [Meetup!]!
 }
 
 
 input NewUser {
-  name: String!
-  description: String!
+  id: ID!
+  username: String!
+  email: String!
+  firstname: String
+  lastname: String
+  gender: String
+  phone: Int!
+  password: String!
 }
 
