@@ -18,27 +18,25 @@ import (
 	"github.com/spf13/viper"
 )
 
-// func init() {
-// 	viper.AutomaticEnv()
-// 	if viper.GetBool(`debug`) {
-// 		log.Println("Service RUN on DEBUG mode")
-// 	}
-// }
+func init() {
+	viper.AutomaticEnv()
+	if viper.GetBool(`debug`) {
+		log.Println("Service RUN on DEBUG mode")
+	}
+}
 
 func main() {
-	// dbHost := viper.GetString("DBHOST")
-	// dbPort := viper.GetInt(`DBPORT`)
-	// dbUser := viper.GetString(`DBUSER`)
-	// dbPass := viper.GetString(`DBPASS`)
-	// dbName := viper.GetString(`DBNAME`)
-	// connection := fmt.Sprintf("host=%s port=%d user=%s "+
-	// 	"password=%s dbname=%s sslmode=disable",
-	// 	dbHost, dbPort, dbUser, dbPass, dbName)
-	// fmt.Println(connection)
-	// dbConn, err := gorm.Open(postgres.Open(connection), &gorm.Config{})
+	dbHost := viper.GetString("DBHOST")
+	dbPort := viper.GetInt(`DBPORT`)
+	dbUser := viper.GetString(`DBUSER`)
+	dbPass := viper.GetString(`DBPASS`)
+	dbName := viper.GetString(`DBNAME`)
+	connection := fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		dbHost, dbPort, dbUser, dbPass, dbName)
+	fmt.Println(connection)
+	dbConn, err := gorm.Open(postgres.Open(connection), &gorm.Config{})
 
-	dsn := "host=localhost user=postgres password=postgres dbname=quizzifire port=5432 sslmode=disable"
-	dbConn, err := gorm.Open("postgres", dsn)
 	if err != nil {
 		fmt.Println(err)
 		panic("failed to connect database")

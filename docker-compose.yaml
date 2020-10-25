@@ -5,6 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: quizzifire_api
+    restart: always
     ports:
       - "3000:3000"
     depends_on:
@@ -14,12 +15,23 @@ services:
 
   db:
     image: postgres
-    container_name: quizzifirepostgres
+    container_name: quizzipostgres
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_DB="${DBNAME}"
-      - POSTGRES_USER="${DBUSER}"
-      - POSTGRES_PASSWORD="${DBPASS}"
-      - DATABASE_HOST="${DBHOST}"
- 
+      - POSTGRES_DB=quizzifire
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pong
+      - DATABASE_HOST=db
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_quizzifire
+    environment:
+      PGADMIN_DEFAULT_EMAIL: lala@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: lala
+    depends_on:
+      - db
+    ports:
+      - "5050:80"    
+    restart: unless-stopped

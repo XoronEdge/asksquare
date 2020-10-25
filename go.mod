@@ -25,8 +25,8 @@ require (
 	github.com/vektah/gqlparser/v2 v2.1.0
 	github.com/xoronedge/gqlgen-tuto v0.0.0-20201017165638-a02fe0623270
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
-	golang.org/x/net v0.0.0-20201020065357-d65d470038a5 // indirect
-	golang.org/x/sys v0.0.0-20201018230417-eeed37f84f13 // indirect
+	golang.org/x/net v0.0.0-20201024042810-be3efd7ff127 // indirect
+	golang.org/x/sys v0.0.0-20201024232916-9f70ab9862d5 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect

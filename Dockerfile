@@ -20,6 +20,6 @@ WORKDIR /dist
 # COPY .env .
 COPY --from=builder /build/main .
 
-EXPOSE 4000
+EXPOSE 3000
 
 CMD ["/dist/main"]
