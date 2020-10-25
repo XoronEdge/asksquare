@@ -11,10 +11,10 @@ import (
 	"github.com/XoronEdge/quizzifire/graph/generated"
 	userRepo "github.com/XoronEdge/quizzifire/internal/user/repo/postgres"
 	userUsecase "github.com/XoronEdge/quizzifire/internal/user/usecase"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres" // Postgres Dialect for Gorm
 	"github.com/labstack/echo/v4"
+	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
 )
 
@@ -38,11 +38,12 @@ func main() {
 	// dbConn, err := gorm.Open(postgres.Open(connection), &gorm.Config{})
 
 	dsn := "host=localhost user=postgres password=postgres dbname=quizzifire port=5432 sslmode=disable"
-	dbConn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	dbConn, err := gorm.Open("postgres", dsn)
 	if err != nil {
 		fmt.Println(err)
 		panic("failed to connect database")
 	}
+	dbConn.LogMode(true)
 	e := echo.New()
 	ur := userRepo.NewUserRepo(dbConn)
 	uc := userUsecase.NewUserUsecase(ur, time.Minute)

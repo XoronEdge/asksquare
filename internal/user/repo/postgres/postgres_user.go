@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/XoronEdge/quizzifire/domain"
-	"gorm.io/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type userRepo struct {
