@@ -35,7 +35,7 @@ func main() {
 		"password=%s dbname=%s sslmode=disable",
 		dbHost, dbPort, dbUser, dbPass, dbName)
 	fmt.Println(connection)
-	dbConn, err := gorm.Open(postgres.Open(connection), &gorm.Config{})
+	dbConn, err := gorm.Open("postgres", connection)
 
 	if err != nil {
 		fmt.Println(err)

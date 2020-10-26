@@ -2,30 +2,7 @@
 
 package model
 
-type Meetup struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	User        *User  `json:"user"`
-}
-
-type NewMeetup struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-}
-
 type NewUser struct {
-	ID        string  `json:"id"`
-	Username  string  `json:"username"`
-	Email     string  `json:"email"`
-	Firstname *string `json:"firstname"`
-	Lastname  *string `json:"lastname"`
-	Gender    *string `json:"gender"`
-	Phone     string  `json:"phone"`
-	Password  string  `json:"password"`
-}
-
-type User struct {
 	ID        string  `json:"id"`
 	Username  string  `json:"username"`
 	Email     string  `json:"email"`

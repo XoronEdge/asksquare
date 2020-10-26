@@ -17,13 +17,13 @@ func NewUserRepo(db *gorm.DB) domain.UserRepo {
 }
 
 //Fetch ...
-func (u *userRepo) Fetch(ctx context.Context) (*[]domain.User, error) {
-	users := []domain.User{}
+func (u *userRepo) Fetch(ctx context.Context) ([]*domain.User, error) {
+	users := []*domain.User{}
 	err := u.db.Find(&users).Error
 	if err != nil {
 		return nil, err
 	}
-	return &users, nil
+	return users, nil
 }
 
 //Store ...

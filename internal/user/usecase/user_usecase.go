@@ -31,7 +31,7 @@ func isRequestValid(m *domain.User) (bool, error) {
 }
 
 //Fetch ...
-func (u *userUsercase) Fetch(c context.Context) (users *[]domain.User, err error) {
+func (u *userUsercase) Fetch(c context.Context) (users []*domain.User, err error) {
 	ctx, cancel := context.WithTimeout(c, u.contextTimeout)
 	defer cancel()
 	users, err = u.userRepo.Fetch(ctx)

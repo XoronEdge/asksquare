@@ -23,7 +23,7 @@ type User struct {
 
 // UserUsecase represent the User's usecases
 type UserUsecase interface {
-	Fetch(ctx context.Context) (*[]User, error)
+	Fetch(ctx context.Context) ([]*User, error)
 	GetByID(ctx context.Context, id int64) (*User, error)
 	Update(ctx context.Context, ar *User) error
 	Store(context.Context, *User) error
@@ -32,7 +32,7 @@ type UserUsecase interface {
 
 // UserRepo represent the User's repository contract
 type UserRepo interface {
-	Fetch(ctx context.Context) (*[]User, error)
+	Fetch(ctx context.Context) ([]*User, error)
 	GetByID(ctx context.Context, id int64) (*User, error)
 	Update(ctx context.Context, ar *User) error
 	Store(ctx context.Context, a *User) error

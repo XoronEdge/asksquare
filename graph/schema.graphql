@@ -5,11 +5,12 @@
 
 type Query {
   users: [User!]!
-  meetups: [Meetup!]!
+  user(id: ID!): User
 }
 
 type Mutation {
   createUser(input: NewUser!): User!
-  createMeetup(input: NewMeetup!): Meetup!
+  updateUser(id: ID!, input: NewUser!): User!
+  deleteUser(id: ID!): User!
 }
 

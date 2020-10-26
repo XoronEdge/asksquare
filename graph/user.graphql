@@ -7,7 +7,6 @@ type User {
   gender: String
   phone: String!
   password: String!
-  # meetups: [Meetup!]!
 }
 
 
