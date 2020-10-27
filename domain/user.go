@@ -2,23 +2,24 @@ package domain
 
 import (
 	"context"
+	"database/sql"
 	"time"
 )
 
 // User ...
 type User struct {
-	ID           uint      `gorm:"primaryKey" json:"id"`
-	Username     string    `gorm:"size(5);not null;uniqueIndex" json:"username" validate:"required,min=5"`
-	Email        string    `gorm:"not null;uniqueIndex" json:"email" validate:"required,email"`
-	HashPassword string    `gorm:"size(8);not null" json:"hashPassword"`
-	Password     string    `gorm:"-" json:"password" validate:"required,min=8" `
-	Gender       string    `gorm:"-" json:"gender" validate:"min=3" `
-	Firstname    string    `gorm:"-" json:"firstname" validate:"min=3" `
-	Lastname     string    `gorm:"-" json:"lastname" validate:"min=3" `
-	Phone        string    `json:"phone" validate:"required,min=7" `
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
-	DeletedAt    time.Time `gorm:"index" json:"deleted_at"`
+	ID           uint         `gorm:"primaryKey" json:"id"`
+	Username     string       `gorm:"size(5);not null;uniqueIndex" json:"username" validate:"required,min=5"`
+	Email        string       `gorm:"not null;uniqueIndex" json:"email" validate:"required,email"`
+	HashPassword string       `gorm:"size(8);not null" json:"hashPassword"`
+	Password     string       `gorm:"-" json:"password" validate:"required,min=8" `
+	Gender       string       `gorm:"-" json:"gender" validate:"min=3" `
+	Firstname    string       `gorm:"-" json:"firstname" validate:"min=3" `
+	Lastname     string       `gorm:"-" json:"lastname" validate:"min=3" `
+	Phone        string       `json:"phone" validate:"required,min=7" `
+	CreatedAt    time.Time    `json:"created_at"`
+	UpdatedAt    time.Time    `json:"updated_at"`
+	DeletedAt    sql.NullTime `gorm:"index" json:"deleted_at"`
 }
 
 // UserUsecase represent the User's usecases

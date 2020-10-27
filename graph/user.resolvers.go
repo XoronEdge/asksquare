@@ -44,11 +44,11 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*domain.U
 	if err != nil {
 		return nil, err
 	}
-	err = r.Uc.Delete(ctx, int64(value))
+	user, err := r.Uc.GetByID(ctx, int64(value))
 	if err != nil {
 		return nil, err
 	}
-	user, err := r.Uc.GetByID(ctx, int64(value))
+	err = r.Uc.Delete(ctx, int64(value))
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +95,6 @@ func inpToMod(input model.NewUser) *domain.User {
 	user.Phone = input.Phone
 	return user
 }
-
 func upinpToMod(input model.NewUser, user *domain.User) *domain.User {
 	user.Firstname = *input.Firstname
 	user.Username = input.Username
