@@ -7,8 +7,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/XoronEdge/quizzifire/graph"
 	"github.com/XoronEdge/quizzifire/graph/generated"
+	graph "github.com/XoronEdge/quizzifire/graph/resolvers"
 	userRepo "github.com/XoronEdge/quizzifire/internal/user/repo/postgres"
 	userUsecase "github.com/XoronEdge/quizzifire/internal/user/usecase"
 	"github.com/jinzhu/gorm"
