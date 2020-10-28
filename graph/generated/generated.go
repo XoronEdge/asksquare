@@ -275,20 +275,7 @@ var sources = []*ast.Source{
 #
 # https://gqlgen.com/getting-started/
 
-
-type Query {
-  users: [User!]!
-  user(id: ID!): User
-}
-
-type Mutation {
-  createUser(input: NewUser!): User!
-  updateUser(id: ID!, input: NewUser!): User!
-  deleteUser(id: ID!): User!
-}
-
-`, BuiltIn: false},
-	{Name: "graph/user.graphql", Input: `type User {
+type User {
   id: ID!
   username: String!
   email: String!
@@ -309,6 +296,18 @@ input NewUser {
   gender: String
   phone: String!
   password: String!
+}
+
+
+type Query {
+  users: [User!]!
+  user(id: ID!): User
+}
+
+type Mutation {
+  createUser(input: NewUser!): User!
+  updateUser(id: ID!, input: NewUser!): User!
+  deleteUser(id: ID!): User!
 }
 
 `, BuiltIn: false},
