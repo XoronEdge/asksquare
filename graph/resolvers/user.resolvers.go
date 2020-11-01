@@ -7,9 +7,9 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/XoronEdge/quizzifire/domain"
-	"github.com/XoronEdge/quizzifire/graph/generated"
-	"github.com/XoronEdge/quizzifire/graph/model"
+	"github.com/XoronEdge/asksquare/domain"
+	"github.com/XoronEdge/asksquare/graph/generated"
+	"github.com/XoronEdge/asksquare/graph/model"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*domain.User, error) {

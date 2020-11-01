@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: quizzifire_api
+    container_name: asksquare_api
     restart: always
     ports:
       - "3000:3000"
@@ -15,18 +15,18 @@ services:
 
   db:
     image: postgres
-    container_name: quizzipostgres
+    container_name: asksquarepostgres
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_DB=quizzifire
+      - POSTGRES_DB=asksquare
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=pong
       - DATABASE_HOST=db
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin_quizzifire
+    container_name: pgadmin_asksquare
     environment:
       PGADMIN_DEFAULT_EMAIL: lala@gmail.com
       PGADMIN_DEFAULT_PASSWORD: lala

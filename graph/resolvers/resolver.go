@@ -1,7 +1,7 @@
 package graph
 
 import (
-	"github.com/XoronEdge/quizzifire/domain"
+	"github.com/XoronEdge/asksquare/domain"
 )
 
 // This file will not be regenerated automatically.

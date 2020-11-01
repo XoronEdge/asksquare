@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/XoronEdge/quizzifire/domain"
+	"github.com/XoronEdge/asksquare/domain"
 	validator "github.com/go-playground/validator/v10"
 )
 

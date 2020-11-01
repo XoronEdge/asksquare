@@ -3,7 +3,7 @@ package postgres
 import (
 	"context"
 
-	"github.com/XoronEdge/quizzifire/domain"
+	"github.com/XoronEdge/asksquare/domain"
 	"github.com/jinzhu/gorm"
 )
 

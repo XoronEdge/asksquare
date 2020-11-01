@@ -1,4 +1,4 @@
-module github.com/XoronEdge/quizzifire
+module github.com/XoronEdge/asksquare
 
 go 1.14
 
@@ -22,8 +22,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.7.1
-	github.com/vektah/gqlparser/v2 v2.1.0
-	github.com/xoronedge/gqlgen-tuto v0.0.0-20201017165638-a02fe0623270
+	github.com/vektah/gqlparser/v2 v2.1.0	
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
 	golang.org/x/net v0.0.0-20201024042810-be3efd7ff127 // indirect
 	golang.org/x/sys v0.0.0-20201024232916-9f70ab9862d5 // indirect

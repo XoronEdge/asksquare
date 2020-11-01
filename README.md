@@ -4,10 +4,10 @@ Here is the steps to run it with `docker-compose`
 $ cd workspace
 
 # Clone into YOUR $GOPATH/src
-$ git clone https://github.com/XoronEdge/quizzifire.git
+$ git clone https://github.com/XoronEdge/asksquare.git
 
 #move to project
-$ cd quizzifire
+$ cd asksquare
 
 # Create .env file and put content in it
 $ touch .env
