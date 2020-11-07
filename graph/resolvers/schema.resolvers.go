@@ -10,10 +10,11 @@ import (
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 
+// QaReport returns generated.QaReportResolver implementation.
+func (r *Resolver) QaReport() generated.QaReportResolver { return &qaReportResolver{r} }
+
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
-
-// User returns generated.UserResolver implementation.
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

@@ -10,5 +10,6 @@ import (
 
 //Resolver ...
 type Resolver struct {
-	Uc domain.UserUsecase
+	Uc  domain.UserUsecase
+	QRc domain.QaReportUsecase
 }

@@ -11,8 +11,8 @@ type Question struct {
 	Title                 string `gorm:"-" json:"title" validate:"min=7" `
 	Description           string `gorm:"-" json:"description" validate:"min=7" `
 	Question              string `json:"question" validate:"required,min=7" `
-	QuestionReports       []QuestionReports
-	QuestionHides         []QuestionHides
+	QaReport              []QaReport
+	QuestionHides         []QuestionHide
 	QuestionAnswerLater   []QuestionAnswerLater
 	QuestionAnswerRequest []QuestionAnswerRequest
 	CreatedAt             time.Time    `json:"created_at"`

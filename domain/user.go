@@ -18,8 +18,8 @@ type User struct {
 	Lastname              string `gorm:"-" json:"lastname" validate:"min=3" `
 	Phone                 string `json:"phone" validate:"required,min=7" `
 	QuestionAnswerLater   []QuestionAnswerLater
-	QuestionReports       []QuestionReports
-	QuestionHides         []QuestionHides
+	QaReport              []QaReport
+	QuestionHides         []QuestionHide
 	QuestionAnswerRequest []QuestionAnswerRequest
 	CreatedAt             time.Time    `json:"created_at"`
 	UpdatedAt             time.Time    `json:"updated_at"`

@@ -10,6 +10,8 @@ import (
 	"github.com/XoronEdge/asksquare/graph/generated"
 	graph "github.com/XoronEdge/asksquare/graph/resolvers"
 	"github.com/XoronEdge/asksquare/initial"
+	qaReportRepo "github.com/XoronEdge/asksquare/internal/questionAction/repo/postgres"
+	qaReportUsecase "github.com/XoronEdge/asksquare/internal/questionAction/usecase"
 	userRepo "github.com/XoronEdge/asksquare/internal/user/repo/postgres"
 	userUsecase "github.com/XoronEdge/asksquare/internal/user/usecase"
 	_ "github.com/jinzhu/gorm/dialects/postgres" // Postgres Dialect for Gorm
@@ -31,8 +33,10 @@ func main() {
 	e := echo.New()
 	ur := userRepo.NewUserRepo(dbConn)
 	uc := userUsecase.NewUserUsecase(ur, time.Minute)
+	qarr := qaReportRepo.NewQaReportRepo(dbConn)
+	qaruc := qaReportUsecase.NewQaReportUsecase(qarr, time.Minute)
 
-	graphqlHandler := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{Uc: uc}}))
+	graphqlHandler := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{Uc: uc, QRc: qaruc}}))
 	playgroundHandler := playground.Handler("GraphQL", "/query")
 
 	e.POST("/query", func(c echo.Context) error {

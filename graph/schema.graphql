@@ -11,6 +11,7 @@ type User {
   gender: String
   phone: String!
   password: String!
+  QaReport: [QaReport!]
 }
 
 
@@ -26,14 +27,36 @@ input NewUser {
 }
 
 
+type QaReport {
+  id: ID!
+  reason: String!
+  description: String!
+  questionId: ID!
+  user: User!
+}
+
+
+input NewQaReport {
+  id: ID!  
+  reason: String!
+  description: String!
+  questionId: Int!  
+}
+
+
 type Query {
   users: [User!]!
   user(id: ID!): User
+  QaReports(question_id: ID!): [QaReport!]!
+  QaReport(id: ID!): QaReport
 }
 
 type Mutation {
   createUser(input: NewUser!): User!
   updateUser(id: ID!, input: NewUser!): User!
   deleteUser(id: ID!): User!
+  createQaReport(input: NewQaReport!): QaReport!
+  updateQaReport(id: ID!, input: NewQaReport!): QaReport!
+  deleteQaReport(id: ID!): QaReport!
 }
 

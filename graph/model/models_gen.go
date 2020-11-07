@@ -2,6 +2,13 @@
 
 package model
 
+type NewQaReport struct {
+	ID          string `json:"id"`
+	Reason      string `json:"reason"`
+	Description string `json:"description"`
+	QuestionID  int    `json:"questionId"`
+}
+
 type NewUser struct {
 	ID        string  `json:"id"`
 	Username  string  `json:"username"`

@@ -37,6 +37,7 @@ type Config struct {
 
 type ResolverRoot interface {
 	Mutation() MutationResolver
+	QaReport() QaReportResolver
 	Query() QueryResolver
 	User() UserResolver
 }
@@ -46,14 +47,27 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Mutation struct {
-		CreateUser func(childComplexity int, input model.NewUser) int
-		DeleteUser func(childComplexity int, id string) int
-		UpdateUser func(childComplexity int, id string, input model.NewUser) int
+		CreateQaReport func(childComplexity int, input model.NewQaReport) int
+		CreateUser     func(childComplexity int, input model.NewUser) int
+		DeleteQaReport func(childComplexity int, id string) int
+		DeleteUser     func(childComplexity int, id string) int
+		UpdateQaReport func(childComplexity int, id string, input model.NewQaReport) int
+		UpdateUser     func(childComplexity int, id string, input model.NewUser) int
+	}
+
+	QaReport struct {
+		Description func(childComplexity int) int
+		ID          func(childComplexity int) int
+		QuestionID  func(childComplexity int) int
+		Reason      func(childComplexity int) int
+		User        func(childComplexity int) int
 	}
 
 	Query struct {
-		User  func(childComplexity int, id string) int
-		Users func(childComplexity int) int
+		QaReport  func(childComplexity int, id string) int
+		QaReports func(childComplexity int, questionID string) int
+		User      func(childComplexity int, id string) int
+		Users     func(childComplexity int) int
 	}
 
 	User struct {
@@ -64,6 +78,7 @@ type ComplexityRoot struct {
 		Lastname  func(childComplexity int) int
 		Password  func(childComplexity int) int
 		Phone     func(childComplexity int) int
+		QaReport  func(childComplexity int) int
 		Username  func(childComplexity int) int
 	}
 }
@@ -72,10 +87,21 @@ type MutationResolver interface {
 	CreateUser(ctx context.Context, input model.NewUser) (*domain.User, error)
 	UpdateUser(ctx context.Context, id string, input model.NewUser) (*domain.User, error)
 	DeleteUser(ctx context.Context, id string) (*domain.User, error)
+	CreateQaReport(ctx context.Context, input model.NewQaReport) (*domain.QaReport, error)
+	UpdateQaReport(ctx context.Context, id string, input model.NewQaReport) (*domain.QaReport, error)
+	DeleteQaReport(ctx context.Context, id string) (*domain.QaReport, error)
+}
+type QaReportResolver interface {
+	ID(ctx context.Context, obj *domain.QaReport) (string, error)
+
+	QuestionID(ctx context.Context, obj *domain.QaReport) (string, error)
+	User(ctx context.Context, obj *domain.QaReport) (*domain.User, error)
 }
 type QueryResolver interface {
 	Users(ctx context.Context) ([]*domain.User, error)
 	User(ctx context.Context, id string) (*domain.User, error)
+	QaReports(ctx context.Context, questionID string) ([]*domain.QaReport, error)
+	QaReport(ctx context.Context, id string) (*domain.QaReport, error)
 }
 type UserResolver interface {
 	ID(ctx context.Context, obj *domain.User) (string, error)
@@ -96,6 +122,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
+	case "Mutation.createQaReport":
+		if e.complexity.Mutation.CreateQaReport == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createQaReport_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateQaReport(childComplexity, args["input"].(model.NewQaReport)), true
+
 	case "Mutation.createUser":
 		if e.complexity.Mutation.CreateUser == nil {
 			break
@@ -107,6 +145,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateUser(childComplexity, args["input"].(model.NewUser)), true
+
+	case "Mutation.deleteQaReport":
+		if e.complexity.Mutation.DeleteQaReport == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_deleteQaReport_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.DeleteQaReport(childComplexity, args["id"].(string)), true
 
 	case "Mutation.deleteUser":
 		if e.complexity.Mutation.DeleteUser == nil {
@@ -120,6 +170,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteUser(childComplexity, args["id"].(string)), true
 
+	case "Mutation.updateQaReport":
+		if e.complexity.Mutation.UpdateQaReport == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateQaReport_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateQaReport(childComplexity, args["id"].(string), args["input"].(model.NewQaReport)), true
+
 	case "Mutation.updateUser":
 		if e.complexity.Mutation.UpdateUser == nil {
 			break
@@ -131,6 +193,65 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateUser(childComplexity, args["id"].(string), args["input"].(model.NewUser)), true
+
+	case "QaReport.description":
+		if e.complexity.QaReport.Description == nil {
+			break
+		}
+
+		return e.complexity.QaReport.Description(childComplexity), true
+
+	case "QaReport.id":
+		if e.complexity.QaReport.ID == nil {
+			break
+		}
+
+		return e.complexity.QaReport.ID(childComplexity), true
+
+	case "QaReport.questionId":
+		if e.complexity.QaReport.QuestionID == nil {
+			break
+		}
+
+		return e.complexity.QaReport.QuestionID(childComplexity), true
+
+	case "QaReport.reason":
+		if e.complexity.QaReport.Reason == nil {
+			break
+		}
+
+		return e.complexity.QaReport.Reason(childComplexity), true
+
+	case "QaReport.user":
+		if e.complexity.QaReport.User == nil {
+			break
+		}
+
+		return e.complexity.QaReport.User(childComplexity), true
+
+	case "Query.QaReport":
+		if e.complexity.Query.QaReport == nil {
+			break
+		}
+
+		args, err := ec.field_Query_QaReport_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.QaReport(childComplexity, args["id"].(string)), true
+
+	case "Query.QaReports":
+		if e.complexity.Query.QaReports == nil {
+			break
+		}
+
+		args, err := ec.field_Query_QaReports_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.QaReports(childComplexity, args["question_id"].(string)), true
 
 	case "Query.user":
 		if e.complexity.Query.User == nil {
@@ -199,6 +320,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.Phone(childComplexity), true
+
+	case "User.QaReport":
+		if e.complexity.User.QaReport == nil {
+			break
+		}
+
+		return e.complexity.User.QaReport(childComplexity), true
 
 	case "User.username":
 		if e.complexity.User.Username == nil {
@@ -284,6 +412,7 @@ type User {
   gender: String
   phone: String!
   password: String!
+  QaReport: [QaReport!]
 }
 
 
@@ -299,15 +428,37 @@ input NewUser {
 }
 
 
+type QaReport {
+  id: ID!
+  reason: String!
+  description: String!
+  questionId: ID!
+  user: User!
+}
+
+
+input NewQaReport {
+  id: ID!  
+  reason: String!
+  description: String!
+  questionId: Int!  
+}
+
+
 type Query {
   users: [User!]!
   user(id: ID!): User
+  QaReports(question_id: ID!): [QaReport!]!
+  QaReport(id: ID!): QaReport
 }
 
 type Mutation {
   createUser(input: NewUser!): User!
   updateUser(id: ID!, input: NewUser!): User!
   deleteUser(id: ID!): User!
+  createQaReport(input: NewQaReport!): QaReport!
+  updateQaReport(id: ID!, input: NewQaReport!): QaReport!
+  deleteQaReport(id: ID!): QaReport!
 }
 
 `, BuiltIn: false},
@@ -317,6 +468,21 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
+
+func (ec *executionContext) field_Mutation_createQaReport_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.NewQaReport
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNNewQaReport2githubᚗcomᚋXoronEdgeᚋasksquareᚋgraphᚋmodelᚐNewQaReport(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
 
 func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
@@ -333,6 +499,21 @@ func (ec *executionContext) field_Mutation_createUser_args(ctx context.Context, 
 	return args, nil
 }
 
+func (ec *executionContext) field_Mutation_deleteQaReport_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
 func (ec *executionContext) field_Mutation_deleteUser_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
@@ -345,6 +526,30 @@ func (ec *executionContext) field_Mutation_deleteUser_args(ctx context.Context, 
 		}
 	}
 	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateQaReport_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	var arg1 model.NewQaReport
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg1, err = ec.unmarshalNNewQaReport2githubᚗcomᚋXoronEdgeᚋasksquareᚋgraphᚋmodelᚐNewQaReport(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg1
 	return args, nil
 }
 
@@ -369,6 +574,36 @@ func (ec *executionContext) field_Mutation_updateUser_args(ctx context.Context, 
 		}
 	}
 	args["input"] = arg1
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_QaReport_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_QaReports_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["question_id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("question_id"))
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["question_id"] = arg0
 	return args, nil
 }
 
@@ -566,6 +801,307 @@ func (ec *executionContext) _Mutation_deleteUser(ctx context.Context, field grap
 	return ec.marshalNUser2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐUser(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Mutation_createQaReport(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createQaReport_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateQaReport(rctx, args["input"].(model.NewQaReport))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*domain.QaReport)
+	fc.Result = res
+	return ec.marshalNQaReport2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateQaReport(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateQaReport_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateQaReport(rctx, args["id"].(string), args["input"].(model.NewQaReport))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*domain.QaReport)
+	fc.Result = res
+	return ec.marshalNQaReport2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_deleteQaReport(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_deleteQaReport_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().DeleteQaReport(rctx, args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*domain.QaReport)
+	fc.Result = res
+	return ec.marshalNQaReport2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _QaReport_id(ctx context.Context, field graphql.CollectedField, obj *domain.QaReport) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "QaReport",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.QaReport().ID(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _QaReport_reason(ctx context.Context, field graphql.CollectedField, obj *domain.QaReport) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "QaReport",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Reason, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _QaReport_description(ctx context.Context, field graphql.CollectedField, obj *domain.QaReport) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "QaReport",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Description, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _QaReport_questionId(ctx context.Context, field graphql.CollectedField, obj *domain.QaReport) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "QaReport",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.QaReport().QuestionID(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _QaReport_user(ctx context.Context, field graphql.CollectedField, obj *domain.QaReport) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "QaReport",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.QaReport().User(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*domain.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐUser(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query_users(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -638,6 +1174,87 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	res := resTmp.(*domain.User)
 	fc.Result = res
 	return ec.marshalOUser2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_QaReports(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_QaReports_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().QaReports(rctx, args["question_id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*domain.QaReport)
+	fc.Result = res
+	return ec.marshalNQaReport2ᚕᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReportᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_QaReport(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_QaReport_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().QaReport(rctx, args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*domain.QaReport)
+	fc.Result = res
+	return ec.marshalOQaReport2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -980,6 +1597,38 @@ func (ec *executionContext) _User_password(ctx context.Context, field graphql.Co
 	res := resTmp.(string)
 	fc.Result = res
 	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _User_QaReport(ctx context.Context, field graphql.CollectedField, obj *domain.User) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.QaReport, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]domain.QaReport)
+	fc.Result = res
+	return ec.marshalOQaReport2ᚕgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReportᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
@@ -2069,6 +2718,50 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
+func (ec *executionContext) unmarshalInputNewQaReport(ctx context.Context, obj interface{}) (model.NewQaReport, error) {
+	var it model.NewQaReport
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "reason":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("reason"))
+			it.Reason, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "description":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			it.Description, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "questionId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("questionId"))
+			it.QuestionID, err = ec.unmarshalNInt2int(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputNewUser(ctx context.Context, obj interface{}) (model.NewUser, error) {
 	var it model.NewUser
 	var asMap = obj.(map[string]interface{})
@@ -2183,6 +2876,95 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "createQaReport":
+			out.Values[i] = ec._Mutation_createQaReport(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateQaReport":
+			out.Values[i] = ec._Mutation_updateQaReport(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "deleteQaReport":
+			out.Values[i] = ec._Mutation_deleteQaReport(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var qaReportImplementors = []string{"QaReport"}
+
+func (ec *executionContext) _QaReport(ctx context.Context, sel ast.SelectionSet, obj *domain.QaReport) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, qaReportImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("QaReport")
+		case "id":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._QaReport_id(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "reason":
+			out.Values[i] = ec._QaReport_reason(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "description":
+			out.Values[i] = ec._QaReport_description(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
+		case "questionId":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._QaReport_questionId(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "user":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._QaReport_user(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2232,6 +3014,31 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_user(ctx, field)
+				return res
+			})
+		case "QaReports":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_QaReports(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "QaReport":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_QaReport(ctx, field)
 				return res
 			})
 		case "__type":
@@ -2300,6 +3107,8 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
+		case "QaReport":
+			out.Values[i] = ec._User_QaReport(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2586,9 +3395,80 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
+func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
+	res, err := graphql.UnmarshalInt(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	res := graphql.MarshalInt(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+	}
+	return res
+}
+
+func (ec *executionContext) unmarshalNNewQaReport2githubᚗcomᚋXoronEdgeᚋasksquareᚋgraphᚋmodelᚐNewQaReport(ctx context.Context, v interface{}) (model.NewQaReport, error) {
+	res, err := ec.unmarshalInputNewQaReport(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
 func (ec *executionContext) unmarshalNNewUser2githubᚗcomᚋXoronEdgeᚋasksquareᚋgraphᚋmodelᚐNewUser(ctx context.Context, v interface{}) (model.NewUser, error) {
 	res, err := ec.unmarshalInputNewUser(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNQaReport2githubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx context.Context, sel ast.SelectionSet, v domain.QaReport) graphql.Marshaler {
+	return ec._QaReport(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNQaReport2ᚕᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReportᚄ(ctx context.Context, sel ast.SelectionSet, v []*domain.QaReport) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNQaReport2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalNQaReport2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx context.Context, sel ast.SelectionSet, v *domain.QaReport) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._QaReport(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
@@ -2908,6 +3788,53 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 		return graphql.Null
 	}
 	return graphql.MarshalBoolean(*v)
+}
+
+func (ec *executionContext) marshalOQaReport2ᚕgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReportᚄ(ctx context.Context, sel ast.SelectionSet, v []domain.QaReport) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNQaReport2githubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOQaReport2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx context.Context, sel ast.SelectionSet, v *domain.QaReport) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._QaReport(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {

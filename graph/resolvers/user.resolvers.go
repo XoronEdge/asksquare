@@ -5,6 +5,7 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 
 	"github.com/XoronEdge/asksquare/domain"
@@ -13,7 +14,7 @@ import (
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*domain.User, error) {
-	user := inpToMod(input)
+	user := inpToUserMod(input)
 	err := r.Uc.Store(ctx, user)
 	if err != nil {
 		return nil, err
@@ -30,7 +31,7 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, id string, input mode
 	if err != nil {
 		return nil, err
 	}
-	user = upinpToMod(input, user)
+	user = upInpToUserMod(input, user)
 
 	err = r.Uc.Update(ctx, user)
 	if err != nil {
@@ -79,12 +80,17 @@ func (r *userResolver) ID(ctx context.Context, obj *domain.User) (string, error)
 	return strconv.Itoa(int(obj.ID)), nil
 }
 
+func (r *userResolver) QaReport(ctx context.Context, obj *domain.User) ([]*domain.QaReport, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 // User returns generated.UserResolver implementation.
 func (r *Resolver) User() generated.UserResolver { return &userResolver{r} }
 
 type userResolver struct{ *Resolver }
 
-func inpToMod(input model.NewUser) *domain.User {
+//  Input Type To User Model
+func inpToUserMod(input model.NewUser) *domain.User {
 	user := &domain.User{}
 	user.Username = input.Username
 	user.Email = input.Email
@@ -95,7 +101,9 @@ func inpToMod(input model.NewUser) *domain.User {
 	user.Phone = input.Phone
 	return user
 }
-func upinpToMod(input model.NewUser, user *domain.User) *domain.User {
+
+// update Input Type To user Model
+func upInpToUserMod(input model.NewUser, user *domain.User) *domain.User {
 	user.Firstname = *input.Firstname
 	user.Username = input.Username
 	user.Email = input.Email
