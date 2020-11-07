@@ -1,17 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/XoronEdge/asksquare/graph/generated"
 	graph "github.com/XoronEdge/asksquare/graph/resolvers"
+	"github.com/XoronEdge/asksquare/initial"
 	userRepo "github.com/XoronEdge/asksquare/internal/user/repo/postgres"
 	userUsecase "github.com/XoronEdge/asksquare/internal/user/usecase"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" // Postgres Dialect for Gorm
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
@@ -26,22 +26,8 @@ func init() {
 }
 
 func main() {
-	dbHost := viper.GetString("DBHOST")
-	dbPort := viper.GetInt(`DBPORT`)
-	dbUser := viper.GetString(`DBUSER`)
-	dbPass := viper.GetString(`DBPASS`)
-	dbName := viper.GetString(`DBNAME`)
-	connection := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		dbHost, dbPort, dbUser, dbPass, dbName)
-	fmt.Println(connection)
-	dbConn, err := gorm.Open("postgres", connection)
-
-	if err != nil {
-		fmt.Println(err)
-		panic("failed to connect database")
-	}
-	dbConn.LogMode(true)
+	os.Setenv("ENV", "DEVELOP")
+	dbConn := initial.GetDB()
 	e := echo.New()
 	ur := userRepo.NewUserRepo(dbConn)
 	uc := userUsecase.NewUserUsecase(ur, time.Minute)
@@ -58,7 +44,7 @@ func main() {
 		playgroundHandler.ServeHTTP(c.Response(), c.Request())
 		return nil
 	})
-
-	log.Fatal(e.Start(viper.GetString("ADDRESS")))
+	//e.Start(":" + viper.GetString("ASK_SQUARE_ADDRESS"))
+	log.Fatal(e.Start(viper.GetString("ASK_SQUARE_ADDRESS")))
 
 }
