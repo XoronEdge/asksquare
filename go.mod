@@ -15,6 +15,8 @@ require (
 	github.com/magiconair/properties v1.8.4 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mitchellh/mapstructure v1.3.3 // indirect
+	github.com/onsi/ginkgo v1.14.2
+	github.com/onsi/gomega v1.10.3
 	github.com/pelletier/go-toml v1.8.1 // indirect
 	github.com/sirupsen/logrus v1.7.0
 	github.com/spf13/afero v1.4.1 // indirect
@@ -22,7 +24,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.7.1
-	github.com/vektah/gqlparser/v2 v2.1.0	
+	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897 // indirect
 	golang.org/x/net v0.0.0-20201024042810-be3efd7ff127 // indirect
 	golang.org/x/sys v0.0.0-20201024232916-9f70ab9862d5 // indirect

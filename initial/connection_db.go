@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" // Postgres Dialect for Gorm
@@ -28,12 +29,13 @@ func GetDB() *gorm.DB {
 // Init returns db connection instance
 func Init() *gorm.DB {
 	var connection string
-	if viper.GetString("ENV") == "TEST" {
-		dbHost := viper.GetString("ASK_SQUARE_TEST_DB_HOST")
-		dbPort := viper.GetInt(`ASK_SQUARE_TEST_DB_PORT`)
-		dbUser := viper.GetString(`ASK_SQUARE_TEST_DB_USER`)
-		dbPass := viper.GetString(`ASK_SQUARE_TEST_DB_PASSWORD`)
-		dbName := viper.GetString(`ASK_SQUARE_TEST_DB_NAME`)
+	if os.Getenv("ENV") == "TEST" {
+		dbHost := os.Getenv("ASK_SQUARE_TEST_DB_HOST")
+		port := os.Getenv(`ASK_SQUARE_TEST_DB_PORT`)
+		dbPort, _ := strconv.Atoi(port)
+		dbUser := os.Getenv(`ASK_SQUARE_TEST_DB_USER`)
+		dbPass := os.Getenv(`ASK_SQUARE_TEST_DB_PASSWORD`)
+		dbName := os.Getenv(`ASK_SQUARE_TEST_DB_NAME`)
 		connection = fmt.Sprintf("host=%s port=%d user=%s "+
 			"password=%s dbname=%s sslmode=disable",
 			dbHost, dbPort, dbUser, dbPass, dbName)
