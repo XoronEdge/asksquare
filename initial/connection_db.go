@@ -17,8 +17,16 @@ var (
 	err error
 )
 
+func init() {
+	viper.AutomaticEnv()
+	if viper.GetBool(`debug`) {
+		log.Println("Service RUN on DEBUG mode")
+	}
+}
+
 //GetDB return db instance
 func GetDB() *gorm.DB {
+
 	if db != nil {
 		return db
 	}
@@ -29,6 +37,7 @@ func GetDB() *gorm.DB {
 // Init returns db connection instance
 func Init() *gorm.DB {
 	var connection string
+
 	if os.Getenv("ENV") == "TEST" {
 		dbHost := os.Getenv("ASK_SQUARE_TEST_DB_HOST")
 		port := os.Getenv(`ASK_SQUARE_TEST_DB_PORT`)
@@ -51,9 +60,12 @@ func Init() *gorm.DB {
 	}
 	fmt.Println("--------------------------------")
 	fmt.Println(connection)
+	fmt.Println("--------------------------------")
 	db, err = gorm.Open("postgres", connection)
 	if err != nil {
-		log.Println("Connection Failed to Open due to following error => ", err)
+		log.Println(err)
+		panic("Connection Failed to Open due to following error => ")
+
 	} else {
 		log.Println("Connection Established")
 	}
