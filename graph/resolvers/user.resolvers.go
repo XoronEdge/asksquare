@@ -83,6 +83,9 @@ func (r *userResolver) ID(ctx context.Context, obj *domain.User) (string, error)
 func (r *userResolver) QaReport(ctx context.Context, obj *domain.User) ([]*domain.QaReport, error) {
 	panic(fmt.Errorf("not implemented"))
 }
+func (r *userResolver) QaHide(ctx context.Context, obj *domain.User) ([]*domain.QaHide, error) {
+	panic(fmt.Errorf("not implemented"))
+}
 
 // User returns generated.UserResolver implementation.
 func (r *Resolver) User() generated.UserResolver { return &userResolver{r} }

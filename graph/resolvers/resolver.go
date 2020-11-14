@@ -12,4 +12,5 @@ import (
 type Resolver struct {
 	Uc  domain.UserUsecase
 	QRc domain.QaReportUsecase
+	QHc domain.QaHideUsecase
 }

@@ -7,9 +7,6 @@ import (
 	"github.com/XoronEdge/asksquare/graph/generated"
 )
 
-// Mutation returns generated.MutationResolver implementation.
-func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
-
 // QaReport returns generated.QaReportResolver implementation.
 func (r *Resolver) QaReport() generated.QaReportResolver { return &qaReportResolver{r} }
 

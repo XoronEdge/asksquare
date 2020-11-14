@@ -12,6 +12,7 @@ type User {
   phone: String!
   password: String!
   QaReport: [QaReport!]
+  QaHide: [QaHide!]
 }
 
 
@@ -35,11 +36,24 @@ type QaReport {
   user: User!
 }
 
+type QaHide {
+  id: ID!
+  hideByUser: Int!
+  questionId: ID!
+  user: User!
+}
+
 
 input NewQaReport {
   id: ID!  
   reason: String!
   description: String!
+  questionId: Int!  
+}
+
+input NewQaHide {
+  id: ID!  
+  hideByUser: Int!
   questionId: Int!  
 }
 
@@ -49,6 +63,8 @@ type Query {
   user(id: ID!): User
   QaReports(question_id: ID!): [QaReport!]!
   QaReport(id: ID!): QaReport
+  QaHides(user_id: ID!): [QaHide!]!
+  QaHide(id: ID!): QaHide
 }
 
 type Mutation {
@@ -58,5 +74,8 @@ type Mutation {
   createQaReport(input: NewQaReport!): QaReport!
   updateQaReport(id: ID!, input: NewQaReport!): QaReport!
   deleteQaReport(id: ID!): QaReport!
+  createQaHide(input: NewQaHide!): QaHide!
+  updateQaHide(id: ID!, input: NewQaHide!): QaHide!
+  deleteQaHide(id: ID!): QaHide!
 }
 

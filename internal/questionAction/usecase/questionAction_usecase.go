@@ -91,3 +91,88 @@ func (qr *qaReportUsercase) Delete(c context.Context, id uint) (err error) {
 	err = qr.qrRepo.Delete(ctx, id)
 	return
 }
+
+//////Question Hide--------------------------------
+type qaHideUsercase struct {
+	qhRepo         domain.QaHideRepo
+	contextTimeout time.Duration
+}
+
+// NewQaHideUsecase ...
+func NewQaHideUsecase(a domain.QaHideRepo, timeout time.Duration) domain.QaHideUsecase {
+	return &qaHideUsercase{
+		qhRepo:         a,
+		contextTimeout: timeout,
+	}
+}
+
+func isQaHideRequestValid(m *domain.QaHide) (bool, error) {
+	validate := validator.New()
+	err := validate.Struct(m)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+//Fetch ...
+func (qh *qaHideUsercase) Fetch(c context.Context) (qah []*domain.QaHide, err error) {
+	ctx, cancel := context.WithTimeout(c, qh.contextTimeout)
+	defer cancel()
+	qah, err = qh.qhRepo.Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+//Store ...
+func (qh *qaHideUsercase) Store(c context.Context, qah *domain.QaHide) (err error) {
+	ctx, cancel := context.WithTimeout(c, qh.contextTimeout)
+	defer cancel()
+
+	qah.UserID = 1
+	if ok, err := isQaHideRequestValid(qah); !ok {
+		return err
+	}
+	err = qh.qhRepo.Store(ctx, qah)
+	if err != nil {
+		return
+	}
+	return
+}
+
+//GetByID ...
+func (qh *qaHideUsercase) GetByID(c context.Context, id uint) (qah *domain.QaHide, err error) {
+	ctx, cancel := context.WithTimeout(c, qh.contextTimeout)
+	defer cancel()
+	qah, err = qh.qhRepo.GetByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+//Update ...
+func (qh *qaHideUsercase) Update(c context.Context, qah *domain.QaHide) (err error) {
+	ctx, cancel := context.WithTimeout(c, qh.contextTimeout)
+	defer cancel()
+
+	if ok, err := isQaHideRequestValid(qah); !ok {
+		return err
+	}
+	qah.UserID = 1
+	err = qh.qhRepo.Update(ctx, qah)
+	if err != nil {
+		return err
+	}
+	return
+}
+
+//Delete ...
+func (qh *qaHideUsercase) Delete(c context.Context, id uint) (err error) {
+	ctx, cancel := context.WithTimeout(c, qh.contextTimeout)
+	defer cancel()
+	err = qh.qhRepo.Delete(ctx, id)
+	return
+}

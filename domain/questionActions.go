@@ -18,15 +18,15 @@ type QaReport struct {
 	DeletedAt    sql.NullTime `gorm:"index" json:"deleted_at"`
 }
 
-// QuestionHide ...
-type QuestionHide struct {
-	ID         uint `gorm:"primaryKey" json:"id"`
-	HideByUser uint `gorm:"-" json:"hideByUser" validate:"min=3" `
-	QuestionID uint
-	UserID     uint
-	CreatedAt  time.Time    `json:"created_at"`
-	UpdatedAt  time.Time    `json:"updated_at"`
-	DeletedAt  sql.NullTime `gorm:"index" json:"deleted_at"`
+// QaHide ...
+type QaHide struct {
+	ID           uint `gorm:"primaryKey" json:"id"`
+	HideByUser   uint `gorm:"" json:"hide_by_user" `
+	QaQuestionID uint
+	UserID       uint
+	CreatedAt    time.Time    `json:"created_at"`
+	UpdatedAt    time.Time    `json:"updated_at"`
+	DeletedAt    sql.NullTime `gorm:"index" json:"deleted_at"`
 }
 
 // QuestionAnswerLater ...
@@ -49,7 +49,7 @@ type QuestionAnswerRequest struct {
 	DeletedAt     sql.NullTime `gorm:"index" json:"deleted_at"`
 }
 
-// QaReportUsecase represent the User's usecases
+// QaReportUsecase ...
 type QaReportUsecase interface {
 	Fetch(ctx context.Context) ([]*QaReport, error)
 	GetByID(ctx context.Context, id uint) (*QaReport, error)
@@ -58,11 +58,29 @@ type QaReportUsecase interface {
 	Delete(ctx context.Context, id uint) error
 }
 
-// QaReportRepo represent the User's repository contract
+// QaReportRepo ...
 type QaReportRepo interface {
 	Fetch(ctx context.Context) ([]*QaReport, error)
 	GetByID(ctx context.Context, id uint) (*QaReport, error)
 	Update(ctx context.Context, qar *QaReport) error
 	Store(ctx context.Context, qar *QaReport) error
+	Delete(ctx context.Context, id uint) error
+}
+
+// QaHideUsecase ...
+type QaHideUsecase interface {
+	Fetch(ctx context.Context) ([]*QaHide, error)
+	GetByID(ctx context.Context, id uint) (*QaHide, error)
+	Update(ctx context.Context, qah *QaHide) error
+	Store(ctx context.Context, qah *QaHide) error
+	Delete(ctx context.Context, id uint) error
+}
+
+//QaHideRepo ...
+type QaHideRepo interface {
+	Fetch(ctx context.Context) ([]*QaHide, error)
+	GetByID(ctx context.Context, id uint) (*QaHide, error)
+	Update(ctx context.Context, qah *QaHide) error
+	Store(ctx context.Context, qah *QaHide) error
 	Delete(ctx context.Context, id uint) error
 }

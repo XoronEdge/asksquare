@@ -12,7 +12,7 @@ type Question struct {
 	Description           string `gorm:"-" json:"description" validate:"min=7" `
 	Question              string `json:"question" validate:"required,min=7" `
 	QaReport              []QaReport
-	QuestionHides         []QuestionHide
+	QuestionHides         []QaHide
 	QuestionAnswerLater   []QuestionAnswerLater
 	QuestionAnswerRequest []QuestionAnswerRequest
 	CreatedAt             time.Time    `json:"created_at"`
