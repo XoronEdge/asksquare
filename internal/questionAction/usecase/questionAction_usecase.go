@@ -76,6 +76,7 @@ func (qr *qaReportUsercase) Update(c context.Context, qar *domain.QaReport) (err
 	if ok, err := isRequestValid(qar); !ok {
 		return err
 	}
+	qar.UserID = 1
 	err = qr.qrRepo.Update(ctx, qar)
 	if err != nil {
 		return err

@@ -2,7 +2,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 
 	"github.com/XoronEdge/asksquare/domain"
@@ -37,15 +36,43 @@ func (r *mutationResolver) UpdateQaReport(ctx context.Context, id string, input 
 }
 
 func (r *mutationResolver) DeleteQaReport(ctx context.Context, id string) (*domain.QaReport, error) {
-	panic(fmt.Errorf("not implemented"))
+	value, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+	qaReport, err := r.QRc.GetByID(ctx, uint(value))
+	if err != nil {
+		return nil, err
+	}
+	err = r.QRc.Delete(ctx, uint(value))
+	if err != nil {
+		return nil, err
+	}
+	return qaReport, nil
 }
 
 func (r *queryResolver) QaReports(ctx context.Context, questionID string) ([]*domain.QaReport, error) {
-	panic(fmt.Errorf("not implemented"))
+	_, err := strconv.Atoi(questionID)
+	if err != nil {
+		return nil, err
+	}
+	qaReports, err := r.QRc.Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return qaReports, nil
 }
 
 func (r *queryResolver) QaReport(ctx context.Context, id string) (*domain.QaReport, error) {
-	panic(fmt.Errorf("not implemented"))
+	value, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+	qaReport, err := r.QRc.GetByID(ctx, uint(value))
+	if err != nil {
+		return nil, err
+	}
+	return qaReport, nil
 }
 
 //ID ...
@@ -58,7 +85,11 @@ func (r *qaReportResolver) QuestionID(ctx context.Context, obj *domain.QaReport)
 }
 
 func (r *qaReportResolver) User(ctx context.Context, obj *domain.QaReport) (*domain.User, error) {
-	panic(fmt.Errorf("not implemented"))
+	user, err := r.Uc.GetByID(ctx, int64(obj.UserID))
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }
 
 type qaReportResolver struct{ *Resolver }
