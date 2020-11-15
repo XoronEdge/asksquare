@@ -58,9 +58,7 @@ func Init() *gorm.DB {
 			"password=%s dbname=%s sslmode=disable",
 			dbHost, dbPort, dbUser, dbPass, dbName)
 	}
-	fmt.Println("--------------------------------")
-	fmt.Println(connection)
-	fmt.Println("--------------------------------")
+
 	db, err = gorm.Open("postgres", connection)
 	if err != nil {
 		log.Println(err)

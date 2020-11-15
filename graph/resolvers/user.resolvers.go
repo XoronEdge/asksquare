@@ -102,8 +102,6 @@ func inpToUserMod(input model.NewUser) *domain.User {
 	user.FirstName = *input.Firstname
 	user.LastName = *input.Lastname
 	user.Phone = input.Phone
-	fmt.Println("-------------------------")
-	fmt.Printf("%+v\n", user)
 	return user
 }
 
