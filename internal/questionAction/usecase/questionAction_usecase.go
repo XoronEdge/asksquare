@@ -8,14 +8,14 @@ import (
 	validator "github.com/go-playground/validator/v10"
 )
 
-type qaReportUsercase struct {
+type QaReportUsecase struct {
 	qrRepo         domain.QaReportRepo
 	contextTimeout time.Duration
 }
 
 // NewQaReportUsecase ...
-func NewQaReportUsecase(a domain.QaReportRepo, timeout time.Duration) domain.QaReportUsecase {
-	return &qaReportUsercase{
+func NewQaReportUsecase(a domain.QaReportRepo, timeout time.Duration) *QaReportUsecase {
+	return &QaReportUsecase{
 		qrRepo:         a,
 		contextTimeout: timeout,
 	}
@@ -31,7 +31,7 @@ func isRequestValid(m *domain.QaReport) (bool, error) {
 }
 
 //Fetch ...
-func (qr *qaReportUsercase) Fetch(c context.Context) (qar []*domain.QaReport, err error) {
+func (qr *QaReportUsecase) Fetch(c context.Context) (qar []*domain.QaReport, err error) {
 	ctx, cancel := context.WithTimeout(c, qr.contextTimeout)
 	defer cancel()
 	qar, err = qr.qrRepo.Fetch(ctx)
@@ -42,7 +42,7 @@ func (qr *qaReportUsercase) Fetch(c context.Context) (qar []*domain.QaReport, er
 }
 
 //Store ...
-func (qr *qaReportUsercase) Store(c context.Context, qar *domain.QaReport) (err error) {
+func (qr *QaReportUsecase) Store(c context.Context, qar *domain.QaReport) (err error) {
 	ctx, cancel := context.WithTimeout(c, qr.contextTimeout)
 	defer cancel()
 
@@ -58,7 +58,7 @@ func (qr *qaReportUsercase) Store(c context.Context, qar *domain.QaReport) (err 
 }
 
 //GetByID ...
-func (qr *qaReportUsercase) GetByID(c context.Context, id uint) (qar *domain.QaReport, err error) {
+func (qr *QaReportUsecase) GetByID(c context.Context, id uint) (qar *domain.QaReport, err error) {
 	ctx, cancel := context.WithTimeout(c, qr.contextTimeout)
 	defer cancel()
 	qar, err = qr.qrRepo.GetByID(ctx, id)
@@ -69,7 +69,7 @@ func (qr *qaReportUsercase) GetByID(c context.Context, id uint) (qar *domain.QaR
 }
 
 //Update ...
-func (qr *qaReportUsercase) Update(c context.Context, qar *domain.QaReport) (err error) {
+func (qr *QaReportUsecase) Update(c context.Context, qar *domain.QaReport) (err error) {
 	ctx, cancel := context.WithTimeout(c, qr.contextTimeout)
 	defer cancel()
 
@@ -85,7 +85,7 @@ func (qr *qaReportUsercase) Update(c context.Context, qar *domain.QaReport) (err
 }
 
 //Delete ...
-func (qr *qaReportUsercase) Delete(c context.Context, id uint) (err error) {
+func (qr *QaReportUsecase) Delete(c context.Context, id uint) (err error) {
 	ctx, cancel := context.WithTimeout(c, qr.contextTimeout)
 	defer cancel()
 	err = qr.qrRepo.Delete(ctx, id)
@@ -93,14 +93,14 @@ func (qr *qaReportUsercase) Delete(c context.Context, id uint) (err error) {
 }
 
 //////Question Hide--------------------------------
-type qaHideUsercase struct {
+type QaHideUsecase struct {
 	qhRepo         domain.QaHideRepo
 	contextTimeout time.Duration
 }
 
 // NewQaHideUsecase ...
-func NewQaHideUsecase(a domain.QaHideRepo, timeout time.Duration) domain.QaHideUsecase {
-	return &qaHideUsercase{
+func NewQaHideUsecase(a domain.QaHideRepo, timeout time.Duration) *QaHideUsecase {
+	return &QaHideUsecase{
 		qhRepo:         a,
 		contextTimeout: timeout,
 	}
@@ -116,7 +116,7 @@ func isQaHideRequestValid(m *domain.QaHide) (bool, error) {
 }
 
 //Fetch ...
-func (qh *qaHideUsercase) Fetch(c context.Context) (qah []*domain.QaHide, err error) {
+func (qh *QaHideUsecase) Fetch(c context.Context) (qah []*domain.QaHide, err error) {
 	ctx, cancel := context.WithTimeout(c, qh.contextTimeout)
 	defer cancel()
 	qah, err = qh.qhRepo.Fetch(ctx)
@@ -127,7 +127,7 @@ func (qh *qaHideUsercase) Fetch(c context.Context) (qah []*domain.QaHide, err er
 }
 
 //Store ...
-func (qh *qaHideUsercase) Store(c context.Context, qah *domain.QaHide) (err error) {
+func (qh *QaHideUsecase) Store(c context.Context, qah *domain.QaHide) (err error) {
 	ctx, cancel := context.WithTimeout(c, qh.contextTimeout)
 	defer cancel()
 
@@ -143,7 +143,7 @@ func (qh *qaHideUsercase) Store(c context.Context, qah *domain.QaHide) (err erro
 }
 
 //GetByID ...
-func (qh *qaHideUsercase) GetByID(c context.Context, id uint) (qah *domain.QaHide, err error) {
+func (qh *QaHideUsecase) GetByID(c context.Context, id uint) (qah *domain.QaHide, err error) {
 	ctx, cancel := context.WithTimeout(c, qh.contextTimeout)
 	defer cancel()
 	qah, err = qh.qhRepo.GetByID(ctx, id)
@@ -154,7 +154,7 @@ func (qh *qaHideUsercase) GetByID(c context.Context, id uint) (qah *domain.QaHid
 }
 
 //Update ...
-func (qh *qaHideUsercase) Update(c context.Context, qah *domain.QaHide) (err error) {
+func (qh *QaHideUsecase) Update(c context.Context, qah *domain.QaHide) (err error) {
 	ctx, cancel := context.WithTimeout(c, qh.contextTimeout)
 	defer cancel()
 
@@ -170,7 +170,7 @@ func (qh *qaHideUsercase) Update(c context.Context, qah *domain.QaHide) (err err
 }
 
 //Delete ...
-func (qh *qaHideUsercase) Delete(c context.Context, id uint) (err error) {
+func (qh *QaHideUsecase) Delete(c context.Context, id uint) (err error) {
 	ctx, cancel := context.WithTimeout(c, qh.contextTimeout)
 	defer cancel()
 	err = qh.qhRepo.Delete(ctx, id)

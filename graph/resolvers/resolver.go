@@ -1,7 +1,7 @@
 package graph
 
 import (
-	"github.com/XoronEdge/asksquare/domain"
+	wira "github.com/XoronEdge/asksquare/cmd/wire"
 )
 
 // This file will not be regenerated automatically.
@@ -10,7 +10,5 @@ import (
 
 //Resolver ...
 type Resolver struct {
-	Uc  domain.UserUsecase
-	QRc domain.QaReportUsecase
-	QHc domain.QaHideUsecase
+	Di wira.Di
 }

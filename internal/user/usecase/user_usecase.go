@@ -8,14 +8,15 @@ import (
 	validator "github.com/go-playground/validator/v10"
 )
 
-type userUsercase struct {
+//UserUsecase ...
+type UserUsecase struct {
 	userRepo       domain.UserRepo
 	contextTimeout time.Duration
 }
 
 // NewUserUsecase ...
-func NewUserUsecase(a domain.UserRepo, timeout time.Duration) domain.UserUsecase {
-	return &userUsercase{
+func NewUserUsecase(a domain.UserRepo, timeout time.Duration) *UserUsecase {
+	return &UserUsecase{
 		userRepo:       a,
 		contextTimeout: timeout,
 	}
@@ -31,7 +32,7 @@ func isRequestValid(m *domain.User) (bool, error) {
 }
 
 //Fetch ...
-func (u *userUsercase) Fetch(c context.Context) (users []*domain.User, err error) {
+func (u *UserUsecase) Fetch(c context.Context) (users []*domain.User, err error) {
 	ctx, cancel := context.WithTimeout(c, u.contextTimeout)
 	defer cancel()
 	users, err = u.userRepo.Fetch(ctx)
@@ -42,7 +43,7 @@ func (u *userUsercase) Fetch(c context.Context) (users []*domain.User, err error
 }
 
 //Store ...
-func (u *userUsercase) Store(c context.Context, user *domain.User) (err error) {
+func (u *UserUsecase) Store(c context.Context, user *domain.User) (err error) {
 	ctx, cancel := context.WithTimeout(c, u.contextTimeout)
 	defer cancel()
 	user.HashPassword = user.Password
@@ -58,7 +59,7 @@ func (u *userUsercase) Store(c context.Context, user *domain.User) (err error) {
 }
 
 //GetByID ...
-func (u *userUsercase) GetByID(c context.Context, id int64) (user *domain.User, err error) {
+func (u *UserUsecase) GetByID(c context.Context, id int64) (user *domain.User, err error) {
 	ctx, cancel := context.WithTimeout(c, u.contextTimeout)
 	defer cancel()
 	user, err = u.userRepo.GetByID(ctx, id)
@@ -69,7 +70,7 @@ func (u *userUsercase) GetByID(c context.Context, id int64) (user *domain.User, 
 }
 
 //Update ...
-func (u *userUsercase) Update(c context.Context, user *domain.User) (err error) {
+func (u *UserUsecase) Update(c context.Context, user *domain.User) (err error) {
 	ctx, cancel := context.WithTimeout(c, u.contextTimeout)
 	defer cancel()
 	user.HashPassword = user.Password
@@ -84,7 +85,7 @@ func (u *userUsercase) Update(c context.Context, user *domain.User) (err error) 
 }
 
 //DELETE ...
-func (u *userUsercase) Delete(c context.Context, id int64) (err error) {
+func (u *UserUsecase) Delete(c context.Context, id int64) (err error) {
 	ctx, cancel := context.WithTimeout(c, u.contextTimeout)
 	defer cancel()
 	err = u.userRepo.Delete(ctx, id)

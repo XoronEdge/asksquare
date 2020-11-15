@@ -15,7 +15,7 @@ import (
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*domain.User, error) {
 	user := inpToUserMod(input)
-	err := r.Uc.Store(ctx, user)
+	err := r.Di.Uc.Store(ctx, user)
 	if err != nil {
 		return nil, err
 	}
@@ -27,13 +27,13 @@ func (r *mutationResolver) UpdateUser(ctx context.Context, id string, input mode
 	if err != nil {
 		return nil, err
 	}
-	user, err := r.Uc.GetByID(ctx, int64(value))
+	user, err := r.Di.Uc.GetByID(ctx, int64(value))
 	if err != nil {
 		return nil, err
 	}
 	user = upInpToUserMod(input, user)
 
-	err = r.Uc.Update(ctx, user)
+	err = r.Di.Uc.Update(ctx, user)
 	if err != nil {
 		return nil, err
 	}
@@ -45,11 +45,11 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*domain.U
 	if err != nil {
 		return nil, err
 	}
-	user, err := r.Uc.GetByID(ctx, int64(value))
+	user, err := r.Di.Uc.GetByID(ctx, int64(value))
 	if err != nil {
 		return nil, err
 	}
-	err = r.Uc.Delete(ctx, int64(value))
+	err = r.Di.Uc.Delete(ctx, int64(value))
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*domain.U
 }
 
 func (r *queryResolver) Users(ctx context.Context) ([]*domain.User, error) {
-	users, err := r.Uc.Fetch(ctx)
+	users, err := r.Di.Uc.Fetch(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (r *queryResolver) User(ctx context.Context, id string) (*domain.User, erro
 	if err != nil {
 		return nil, err
 	}
-	user, err := r.Uc.GetByID(ctx, int64(value))
+	user, err := r.Di.Uc.GetByID(ctx, int64(value))
 	if err != nil {
 		return nil, err
 	}

@@ -11,7 +11,7 @@ import (
 
 func (r *mutationResolver) CreateQaReport(ctx context.Context, input model.NewQaReport) (*domain.QaReport, error) {
 	qar := inpToQRMod(input)
-	err := r.QRc.Store(ctx, qar)
+	err := r.Di.QRc.Store(ctx, qar)
 	if err != nil {
 		return nil, err
 	}
@@ -23,13 +23,13 @@ func (r *mutationResolver) UpdateQaReport(ctx context.Context, id string, input 
 	if err != nil {
 		return nil, err
 	}
-	qar, err := r.QRc.GetByID(ctx, uint(value))
+	qar, err := r.Di.QRc.GetByID(ctx, uint(value))
 	if err != nil {
 		return nil, err
 	}
 	qar = upInpToQRMod(input, qar)
 
-	err = r.QRc.Update(ctx, qar)
+	err = r.Di.QRc.Update(ctx, qar)
 	if err != nil {
 		return nil, err
 	}
@@ -41,11 +41,11 @@ func (r *mutationResolver) DeleteQaReport(ctx context.Context, id string) (*doma
 	if err != nil {
 		return nil, err
 	}
-	qaReport, err := r.QRc.GetByID(ctx, uint(value))
+	qaReport, err := r.Di.QRc.GetByID(ctx, uint(value))
 	if err != nil {
 		return nil, err
 	}
-	err = r.QRc.Delete(ctx, uint(value))
+	err = r.Di.QRc.Delete(ctx, uint(value))
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (r *queryResolver) QaReports(ctx context.Context, questionID string) ([]*do
 	if err != nil {
 		return nil, err
 	}
-	qaReports, err := r.QRc.Fetch(ctx)
+	qaReports, err := r.Di.QRc.Fetch(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (r *queryResolver) QaReport(ctx context.Context, id string) (*domain.QaRepo
 	if err != nil {
 		return nil, err
 	}
-	qaReport, err := r.QRc.GetByID(ctx, uint(value))
+	qaReport, err := r.Di.QRc.GetByID(ctx, uint(value))
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func (r *qaReportResolver) QuestionID(ctx context.Context, obj *domain.QaReport)
 }
 
 func (r *qaReportResolver) User(ctx context.Context, obj *domain.QaReport) (*domain.User, error) {
-	user, err := r.Uc.GetByID(ctx, int64(obj.UserID))
+	user, err := r.Di.Uc.GetByID(ctx, int64(obj.UserID))
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func upInpToQRMod(input model.NewQaReport, qar *domain.QaReport) *domain.QaRepor
 ///Question Hide--------------------------------
 func (r *mutationResolver) CreateQaHide(ctx context.Context, input model.NewQaHide) (*domain.QaHide, error) {
 	qah := inpToQHMod(input)
-	err := r.QHc.Store(ctx, qah)
+	err := r.Di.QHc.Store(ctx, qah)
 	if err != nil {
 		return nil, err
 	}
@@ -127,13 +127,13 @@ func (r *mutationResolver) UpdateQaHide(ctx context.Context, id string, input mo
 	if err != nil {
 		return nil, err
 	}
-	qah, err := r.QHc.GetByID(ctx, uint(value))
+	qah, err := r.Di.QHc.GetByID(ctx, uint(value))
 	if err != nil {
 		return nil, err
 	}
 	qah = upInpToQHMod(input, qah)
 
-	err = r.QHc.Update(ctx, qah)
+	err = r.Di.QHc.Update(ctx, qah)
 	if err != nil {
 		return nil, err
 	}
@@ -145,11 +145,11 @@ func (r *mutationResolver) DeleteQaHide(ctx context.Context, id string) (*domain
 	if err != nil {
 		return nil, err
 	}
-	qaHide, err := r.QHc.GetByID(ctx, uint(value))
+	qaHide, err := r.Di.QHc.GetByID(ctx, uint(value))
 	if err != nil {
 		return nil, err
 	}
-	err = r.QHc.Delete(ctx, uint(value))
+	err = r.Di.QHc.Delete(ctx, uint(value))
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +169,7 @@ func (r *qaHideResolver) QuestionID(ctx context.Context, obj *domain.QaHide) (st
 }
 
 func (r *qaHideResolver) User(ctx context.Context, obj *domain.QaHide) (*domain.User, error) {
-	user, err := r.Uc.GetByID(ctx, int64(obj.UserID))
+	user, err := r.Di.Uc.GetByID(ctx, int64(obj.UserID))
 	if err != nil {
 		return nil, err
 	}
@@ -181,7 +181,7 @@ func (r *queryResolver) QaHides(ctx context.Context, userID string) ([]*domain.Q
 	if err != nil {
 		return nil, err
 	}
-	qaHidess, err := r.QHc.Fetch(ctx)
+	qaHidess, err := r.Di.QHc.Fetch(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +193,7 @@ func (r *queryResolver) QaHide(ctx context.Context, id string) (*domain.QaHide, 
 	if err != nil {
 		return nil, err
 	}
-	qaHide, err := r.QHc.GetByID(ctx, uint(value))
+	qaHide, err := r.Di.QHc.GetByID(ctx, uint(value))
 	if err != nil {
 		return nil, err
 	}
