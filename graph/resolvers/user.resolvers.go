@@ -99,21 +99,23 @@ func inpToUserMod(input model.NewUser) *domain.User {
 	user.Email = input.Email
 	user.Password = input.Password
 	user.Gender = *input.Gender
-	user.Firstname = *input.Firstname
-	user.Lastname = *input.Lastname
+	user.FirstName = *input.Firstname
+	user.LastName = *input.Lastname
 	user.Phone = input.Phone
+	fmt.Println("-------------------------")
+	fmt.Printf("%+v\n", user)
 	return user
 }
 
 // update Input Type To user Model
 func upInpToUserMod(input model.NewUser, user *domain.User) *domain.User {
-	user.Firstname = *input.Firstname
+	user.FirstName = *input.Firstname
 	user.Username = input.Username
 	user.Email = input.Email
 	user.Password = input.Password
 	user.Gender = *input.Gender
-	user.Firstname = *input.Firstname
-	user.Lastname = *input.Lastname
+	user.FirstName = *input.Firstname
+	user.LastName = *input.Lastname
 	user.Phone = input.Phone
 	return user
 }

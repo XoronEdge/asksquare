@@ -13,9 +13,9 @@ type User struct {
 	Email                 string `gorm:"not null;uniqueIndex" json:"email" validate:"required,email"`
 	HashPassword          string `gorm:"size(8);not null" json:"hashPassword"`
 	Password              string `gorm:"-" json:"password" validate:"required,min=8" `
-	Gender                string `gorm:"-" json:"gender" validate:"min=3" `
-	Firstname             string `gorm:"-" json:"firstname" validate:"min=3" `
-	Lastname              string `gorm:"-" json:"lastname" validate:"min=3" `
+	Gender                string `json:"gender" validate:"min=3" `
+	FirstName             string `json:"first_name" validate:"min=3" `
+	LastName              string `json:"last_name" validate:"min=3" `
 	Phone                 string `json:"phone" validate:"required,min=7" `
 	QuestionAnswerLater   []QuestionAnswerLater
 	QaReport              []QaReport

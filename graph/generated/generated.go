@@ -85,10 +85,10 @@ type ComplexityRoot struct {
 
 	User struct {
 		Email     func(childComplexity int) int
-		Firstname func(childComplexity int) int
+		FirstName func(childComplexity int) int
 		Gender    func(childComplexity int) int
 		ID        func(childComplexity int) int
-		Lastname  func(childComplexity int) int
+		LastName  func(childComplexity int) int
 		Password  func(childComplexity int) int
 		Phone     func(childComplexity int) int
 		QaHide    func(childComplexity int) int
@@ -395,11 +395,11 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		return e.complexity.User.Email(childComplexity), true
 
 	case "User.firstname":
-		if e.complexity.User.Firstname == nil {
+		if e.complexity.User.FirstName == nil {
 			break
 		}
 
-		return e.complexity.User.Firstname(childComplexity), true
+		return e.complexity.User.FirstName(childComplexity), true
 
 	case "User.gender":
 		if e.complexity.User.Gender == nil {
@@ -416,11 +416,11 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		return e.complexity.User.ID(childComplexity), true
 
 	case "User.lastname":
-		if e.complexity.User.Lastname == nil {
+		if e.complexity.User.LastName == nil {
 			break
 		}
 
-		return e.complexity.User.Lastname(childComplexity), true
+		return e.complexity.User.LastName(childComplexity), true
 
 	case "User.password":
 		if e.complexity.User.Password == nil {
@@ -2023,7 +2023,7 @@ func (ec *executionContext) _User_firstname(ctx context.Context, field graphql.C
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Firstname, nil
+		return obj.FirstName, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2055,7 +2055,7 @@ func (ec *executionContext) _User_lastname(ctx context.Context, field graphql.Co
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Lastname, nil
+		return obj.LastName, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
