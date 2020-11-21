@@ -19,5 +19,10 @@ $ docker-compose up --build
 # Execute the call
 $ curl localhost:3000
 
+# ENV variables
+- export ASKSQUARE_URL='postgres://postgres:postgres@localhost:5432/asksquare?  sslmode=disable'
+
+- export ASKSQUARE_TEST_URL='postgres://postgres:postgres@localhost:5432/asksquare_test?sslmode=disable'
+
 
 
