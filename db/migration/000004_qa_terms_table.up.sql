@@ -5,5 +5,5 @@ CREATE TABLE "qa_terms" (
     "updated_at" TIMESTAMPTZ,
     "deleted_at" TIMESTAMPTZ,
     "qa_categorie_id" bigserial,
-    CONSTRAINT fk_qa_categorie FOREIGN Key(qa_categorie_id) REFERENCES qa_categories(id) ON DELETE CASCADE
+    CONSTRAINT fk_qa_categorie FOREIGN Key(qa_categorie_id) REFERENCES qa_categories(id) 
 )

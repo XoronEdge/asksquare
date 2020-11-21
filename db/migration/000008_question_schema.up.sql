@@ -14,10 +14,10 @@ CREATE TABLE "qa_questions" (
     "qa_term_id" bigserial,
     "qa_chapter_id" bigserial,
     "qa_topic_id" bigserial,
-    CONSTRAINT fk_qa_question_type FOREIGN Key(qa_question_type_id) REFERENCES qa_question_type(id) ON DELETE CASCADE,
-    CONSTRAINT fk_qa_categories FOREIGN Key(qa_categorie_id) REFERENCES qa_categories(id) ON DELETE CASCADE,
-    CONSTRAINT fk_qa_subjects FOREIGN Key(qa_subject_id) REFERENCES qa_subjects(id) ON DELETE CASCADE,
-    CONSTRAINT fk_qa_terms FOREIGN Key(qa_term_id) REFERENCES qa_terms(id) ON DELETE CASCADE,
-    CONSTRAINT fk_qa_chapters FOREIGN Key(qa_chapter_id) REFERENCES qa_chapters(id) ON DELETE CASCADE,
-    CONSTRAINT fk_qa_topics FOREIGN Key(qa_topic_id) REFERENCES qa_topics(id) ON DELETE CASCADE
+    CONSTRAINT fk_qa_question_type FOREIGN Key(qa_question_type_id) REFERENCES qa_question_type(id) ,
+    CONSTRAINT fk_qa_categories FOREIGN Key(qa_categorie_id) REFERENCES qa_categories(id) ,
+    CONSTRAINT fk_qa_subjects FOREIGN Key(qa_subject_id) REFERENCES qa_subjects(id) ,
+    CONSTRAINT fk_qa_terms FOREIGN Key(qa_term_id) REFERENCES qa_terms(id) ,
+    CONSTRAINT fk_qa_chapters FOREIGN Key(qa_chapter_id) REFERENCES qa_chapters(id) ,
+    CONSTRAINT fk_qa_topics FOREIGN Key(qa_topic_id) REFERENCES qa_topics(id) 
 );
