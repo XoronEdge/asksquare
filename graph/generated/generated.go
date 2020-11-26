@@ -131,6 +131,7 @@ type QueryResolver interface {
 type UserResolver interface {
 	ID(ctx context.Context, obj *domain.User) (string, error)
 
+	QaReport(ctx context.Context, obj *domain.User) ([]*domain.QaReport, error)
 	QaHide(ctx context.Context, obj *domain.User) ([]*domain.QaHide, error)
 }
 
@@ -2182,14 +2183,14 @@ func (ec *executionContext) _User_QaReport(ctx context.Context, field graphql.Co
 		Object:     "User",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.QaReport, nil
+		return ec.resolvers.User().QaReport(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2198,9 +2199,9 @@ func (ec *executionContext) _User_QaReport(ctx context.Context, field graphql.Co
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]domain.QaReport)
+	res := resTmp.([]*domain.QaReport)
 	fc.Result = res
-	return ec.marshalOQaReport2ᚕgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReportᚄ(ctx, field.Selections, res)
+	return ec.marshalOQaReport2ᚕᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReportᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _User_QaHide(ctx context.Context, field graphql.CollectedField, obj *domain.User) (ret graphql.Marshaler) {
@@ -3866,7 +3867,16 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 				atomic.AddUint32(&invalids, 1)
 			}
 		case "QaReport":
-			out.Values[i] = ec._User_QaReport(ctx, field, obj)
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._User_QaReport(ctx, field, obj)
+				return res
+			})
 		case "QaHide":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
@@ -4662,7 +4672,7 @@ func (ec *executionContext) marshalOQaHide2ᚖgithubᚗcomᚋXoronEdgeᚋasksqua
 	return ec._QaHide(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalOQaReport2ᚕgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReportᚄ(ctx context.Context, sel ast.SelectionSet, v []domain.QaReport) graphql.Marshaler {
+func (ec *executionContext) marshalOQaReport2ᚕᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReportᚄ(ctx context.Context, sel ast.SelectionSet, v []*domain.QaReport) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -4689,7 +4699,7 @@ func (ec *executionContext) marshalOQaReport2ᚕgithubᚗcomᚋXoronEdgeᚋasksq
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNQaReport2githubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx, sel, v[i])
+			ret[i] = ec.marshalNQaReport2ᚖgithubᚗcomᚋXoronEdgeᚋasksquareᚋdomainᚐQaReport(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
