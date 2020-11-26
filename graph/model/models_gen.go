@@ -2,6 +2,11 @@
 
 package model
 
+type NewQaAnswerLater struct {
+	ID         string `json:"id"`
+	QuestionID int    `json:"questionId"`
+}
+
 type NewQaHide struct {
 	ID         string `json:"id"`
 	HideByUser int    `json:"hideByUser"`

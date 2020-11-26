@@ -176,3 +176,90 @@ func (qh *QaHideUsecase) Delete(c context.Context, id uint) (err error) {
 	err = qh.qhRepo.Delete(ctx, id)
 	return
 }
+
+//////Question Answer Later--------------------------------
+
+//QaAnswerLaterUsecase ...
+type QaAnswerLaterUsecase struct {
+	qalRepo        domain.QaAnswerLaterRepo
+	contextTimeout time.Duration
+}
+
+// NewQaAnswerLaterUsecase ...
+func NewQaAnswerLaterUsecase(a domain.QaAnswerLaterRepo, timeout time.Duration) *QaAnswerLaterUsecase {
+	return &QaAnswerLaterUsecase{
+		qalRepo:        a,
+		contextTimeout: timeout,
+	}
+}
+
+func isQaAnswerLaterRequestValid(m *domain.QaAnswerLater) (bool, error) {
+	validate := validator.New()
+	err := validate.Struct(m)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+//Fetch ...
+func (qal *QaAnswerLaterUsecase) Fetch(c context.Context) (qaal []*domain.QaAnswerLater, err error) {
+	ctx, cancel := context.WithTimeout(c, qal.contextTimeout)
+	defer cancel()
+	qaal, err = qal.qalRepo.Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+//Store ...
+func (qal *QaAnswerLaterUsecase) Store(c context.Context, qaal *domain.QaAnswerLater) (err error) {
+	ctx, cancel := context.WithTimeout(c, qal.contextTimeout)
+	defer cancel()
+
+	qaal.UserID = 1
+	if ok, err := isQaAnswerLaterRequestValid(qaal); !ok {
+		return err
+	}
+	err = qal.qalRepo.Store(ctx, qaal)
+	if err != nil {
+		return
+	}
+	return
+}
+
+//GetByID ...
+func (qal *QaAnswerLaterUsecase) GetByID(c context.Context, id uint) (qaal *domain.QaAnswerLater, err error) {
+	ctx, cancel := context.WithTimeout(c, qal.contextTimeout)
+	defer cancel()
+	qaal, err = qal.qalRepo.GetByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+//Update ...
+func (qal *QaAnswerLaterUsecase) Update(c context.Context, qaal *domain.QaAnswerLater) (err error) {
+	ctx, cancel := context.WithTimeout(c, qal.contextTimeout)
+	defer cancel()
+
+	if ok, err := isQaAnswerLaterRequestValid(qaal); !ok {
+		return err
+	}
+	qaal.UserID = 1
+	err = qal.qalRepo.Update(ctx, qaal)
+	if err != nil {
+		return err
+	}
+	return
+}
+
+//Delete ...
+func (qal *QaAnswerLaterUsecase) Delete(c context.Context, id uint) (err error) {
+	ctx, cancel := context.WithTimeout(c, qal.contextTimeout)
+	defer cancel()
+	err = qal.qalRepo.Delete(ctx, id)
+	return
+}

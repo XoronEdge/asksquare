@@ -222,3 +222,105 @@ func upInpToQHMod(input model.NewQaHide, qar *domain.QaHide) *domain.QaHide {
 	qar.QaQuestionID = uint(input.QuestionID)
 	return qar
 }
+
+///Question Answer Later --------------------------------
+func (r *mutationResolver) CreateQaAnswerLater(ctx context.Context, input model.NewQaAnswerLater) (*domain.QaAnswerLater, error) {
+	qaal := inpToQALMod(input)
+	err := r.Di.QALc.Store(ctx, qaal)
+	if err != nil {
+		return nil, err
+	}
+	return qaal, nil
+}
+
+func (r *mutationResolver) UpdateQaAnswerLater(ctx context.Context, id string, input model.NewQaAnswerLater) (*domain.QaAnswerLater, error) {
+	value, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+	qaal, err := r.Di.QALc.GetByID(ctx, uint(value))
+	if err != nil {
+		return nil, err
+	}
+	qaal = upInpToQALMod(input, qaal)
+
+	err = r.Di.QALc.Update(ctx, qaal)
+	if err != nil {
+		return nil, err
+	}
+	return qaal, nil
+}
+
+func (r *mutationResolver) DeleteQaAnswerLater(ctx context.Context, id string) (*domain.QaAnswerLater, error) {
+	value, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+	qaAnswerLater, err := r.Di.QALc.GetByID(ctx, uint(value))
+	if err != nil {
+		return nil, err
+	}
+	err = r.Di.QALc.Delete(ctx, uint(value))
+	if err != nil {
+		return nil, err
+	}
+	return qaAnswerLater, nil
+}
+
+func (r *qaAnswerLaterResolver) ID(ctx context.Context, obj *domain.QaAnswerLater) (string, error) {
+	return strconv.Itoa(int(obj.ID)), nil
+}
+
+func (r *qaAnswerLaterResolver) QuestionID(ctx context.Context, obj *domain.QaAnswerLater) (string, error) {
+	return strconv.Itoa(int(obj.ID)), nil
+}
+
+func (r *qaAnswerLaterResolver) User(ctx context.Context, obj *domain.QaAnswerLater) (*domain.User, error) {
+	user, err := r.Di.Uc.GetByID(ctx, int64(obj.UserID))
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (r *queryResolver) QaAnswerLaters(ctx context.Context, userID string) ([]*domain.QaAnswerLater, error) {
+	_, err := strconv.Atoi(userID)
+	if err != nil {
+		return nil, err
+	}
+	qaAnswerLaterss, err := r.Di.QALc.Fetch(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return qaAnswerLaterss, nil
+}
+
+func (r *queryResolver) QaAnswerLater(ctx context.Context, id string) (*domain.QaAnswerLater, error) {
+	value, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+	qaAnswerLater, err := r.Di.QALc.GetByID(ctx, uint(value))
+	if err != nil {
+		return nil, err
+	}
+	return qaAnswerLater, nil
+}
+
+// QaAnswerLater returns generated.QaAnswerLaterResolver implementation.
+func (r *Resolver) QaAnswerLater() generated.QaAnswerLaterResolver { return &qaAnswerLaterResolver{r} }
+
+type qaAnswerLaterResolver struct{ *Resolver }
+
+//Input type To Question Report Model
+func inpToQALMod(input model.NewQaAnswerLater) *domain.QaAnswerLater {
+	qar := &domain.QaAnswerLater{}
+	qar.QaQuestionID = uint(input.QuestionID)
+	return qar
+}
+
+//Update Input type To Question Report Model
+func upInpToQALMod(input model.NewQaAnswerLater, qar *domain.QaAnswerLater) *domain.QaAnswerLater {
+	qar.QaQuestionID = uint(input.QuestionID)
+	return qar
+}

@@ -28,7 +28,9 @@ func InitializeDi() Di {
 	qaReportUsecase := usecase2.NewQaReportUsecase(qaReportRepo, duration)
 	qaHideRepo := postgres2.NewQaHideRepo(db)
 	qaHideUsecase := usecase2.NewQaHideUsecase(qaHideRepo, duration)
-	di := NewDi(userUsecase, qaReportUsecase, qaHideUsecase)
+	qaAnswerLaterRepo := postgres2.NewQaAnswerLaterRepo(db)
+	qaAnswerLaterUsecase := usecase2.NewQaAnswerLaterUsecase(qaAnswerLaterRepo, duration)
+	di := NewDi(userUsecase, qaReportUsecase, qaHideUsecase, qaAnswerLaterUsecase)
 	return di
 }
 
@@ -40,14 +42,15 @@ func init() {
 
 //Di ...
 type Di struct {
-	Uc  domain.UserUsecase
-	QRc domain.QaReportUsecase
-	QHc domain.QaHideUsecase
+	Uc   domain.UserUsecase
+	QRc  domain.QaReportUsecase
+	QHc  domain.QaHideUsecase
+	QALc domain.QaAnswerLaterUsecase
 }
 
 //NewDi return
-func NewDi(Uc domain.UserUsecase, QRc domain.QaReportUsecase, QHc domain.QaHideUsecase) Di {
-	return Di{Uc: Uc, QRc: QRc, QHc: QHc}
+func NewDi(Uc domain.UserUsecase, QRc domain.QaReportUsecase, QHc domain.QaHideUsecase, QALc domain.QaAnswerLaterUsecase) Di {
+	return Di{Uc: Uc, QRc: QRc, QHc: QHc, QALc: QALc}
 }
 
 //Set1 ...
@@ -58,6 +61,9 @@ var Set2 = wire.NewSet(usecase2.NewQaReportUsecase, wire.Bind(new(domain.QaRepor
 
 //Set3 ...
 var Set3 = wire.NewSet(usecase2.NewQaHideUsecase, wire.Bind(new(domain.QaHideUsecase), new(*usecase2.QaHideUsecase)))
+
+//Set4 ...
+var Set4 = wire.NewSet(usecase2.NewQaAnswerLaterUsecase, wire.Bind(new(domain.QaAnswerLaterUsecase), new(*usecase2.QaAnswerLaterUsecase)))
 
 //NewTime ...
 func NewTime() time.Duration {

@@ -19,14 +19,15 @@ package wira
 
 // //Di ...
 // type Di struct {
-// 	Uc  domain.UserUsecase
-// 	QRc domain.QaReportUsecase
-// 	QHc domain.QaHideUsecase
+// 	Uc   domain.UserUsecase
+// 	QRc  domain.QaReportUsecase
+// 	QHc  domain.QaHideUsecase
+// 	QALc domain.QaAnswerLaterUsecase
 // }
 
 // //NewDi return
-// func NewDi(Uc domain.UserUsecase, QRc domain.QaReportUsecase, QHc domain.QaHideUsecase) Di {
-// 	return Di{Uc: Uc, QRc: QRc, QHc: QHc}
+// func NewDi(Uc domain.UserUsecase, QRc domain.QaReportUsecase, QHc domain.QaHideUsecase, QALc domain.QaAnswerLaterUsecase) Di {
+// 	return Di{Uc: Uc, QRc: QRc, QHc: QHc, QALc: QALc}
 // }
 
 // //Set1 ...
@@ -44,6 +45,11 @@ package wira
 // 	wire.Bind(new(domain.QaHideUsecase), new(*qaActionUsecase.QaHideUsecase)),
 // )
 
+// //Set4 ...
+// var Set4 = wire.NewSet(qaActionUsecase.NewQaAnswerLaterUsecase,
+// 	wire.Bind(new(domain.QaAnswerLaterUsecase), new(*qaActionUsecase.QaAnswerLaterUsecase)),
+// )
+
 // //NewTime ...
 // func NewTime() time.Duration {
 // 	return time.Minute
@@ -54,7 +60,8 @@ package wira
 // 	wire.Build(initial.GetDB, NewTime, userRepo.NewUserRepo,
 // 		qaActionRepo.NewQaReportRepo,
 // 		qaActionRepo.NewQaHideRepo,
-// 		Set1, Set2, Set3,
+// 		qaActionRepo.NewQaAnswerLaterRepo,
+// 		Set1, Set2, Set3, Set4,
 // 		NewDi)
 // 	return Di{}
 // }

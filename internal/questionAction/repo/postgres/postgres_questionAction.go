@@ -25,6 +25,15 @@ func NewQaHideRepo(db *gorm.DB) domain.QaHideRepo {
 	return &qaHideRepo{db}
 }
 
+type qaAnswerLaterRepo struct {
+	db *gorm.DB
+}
+
+// NewQaAnswerLaterRepo  ...
+func NewQaAnswerLaterRepo(db *gorm.DB) domain.QaAnswerLaterRepo {
+	return &qaAnswerLaterRepo{db}
+}
+
 //Fetch ...
 func (qr *qaReportRepo) Fetch(ctx context.Context) ([]*domain.QaReport, error) {
 	qar := []*domain.QaReport{}
@@ -71,9 +80,9 @@ func (qr *qaReportRepo) Delete(ctx context.Context, id uint) (err error) {
 
 ////Question Hide--------------------------------
 //Fetch ...
-func (qhr *qaHideRepo) Fetch(ctx context.Context) ([]*domain.QaHide, error) {
+func (qalr *qaHideRepo) Fetch(ctx context.Context) ([]*domain.QaHide, error) {
 	qh := []*domain.QaHide{}
-	err := qhr.db.Find(&qh).Error
+	err := qalr.db.Find(&qh).Error
 	if err != nil {
 		return nil, err
 	}
@@ -81,8 +90,8 @@ func (qhr *qaHideRepo) Fetch(ctx context.Context) ([]*domain.QaHide, error) {
 }
 
 //Store ...
-func (qhr *qaHideRepo) Store(ctx context.Context, qh *domain.QaHide) (err error) {
-	err = qhr.db.Create(&qh).Error
+func (qalr *qaHideRepo) Store(ctx context.Context, qh *domain.QaHide) (err error) {
+	err = qalr.db.Create(&qh).Error
 	if err != nil {
 		return
 	}
@@ -90,9 +99,9 @@ func (qhr *qaHideRepo) Store(ctx context.Context, qh *domain.QaHide) (err error)
 }
 
 //GetByID ...
-func (qhr *qaHideRepo) GetByID(ctx context.Context, id uint) (qh *domain.QaHide, err error) {
+func (qalr *qaHideRepo) GetByID(ctx context.Context, id uint) (qh *domain.QaHide, err error) {
 	qh = &domain.QaHide{}
-	err = qhr.db.First(&qh, id).Error
+	err = qalr.db.First(&qh, id).Error
 	if err != nil {
 		return nil, err
 	}
@@ -100,8 +109,8 @@ func (qhr *qaHideRepo) GetByID(ctx context.Context, id uint) (qh *domain.QaHide,
 }
 
 //Update ...
-func (qhr *qaHideRepo) Update(ctx context.Context, qh *domain.QaHide) (err error) {
-	err = qhr.db.Save(&qh).Error
+func (qalr *qaHideRepo) Update(ctx context.Context, qh *domain.QaHide) (err error) {
+	err = qalr.db.Save(&qh).Error
 	if err != nil {
 		return err
 	}
@@ -109,7 +118,52 @@ func (qhr *qaHideRepo) Update(ctx context.Context, qh *domain.QaHide) (err error
 }
 
 //Delete ...
-func (qhr *qaHideRepo) Delete(ctx context.Context, id uint) (err error) {
-	err = qhr.db.Delete(&domain.QaHide{}, id).Error
+func (qalr *qaHideRepo) Delete(ctx context.Context, id uint) (err error) {
+	err = qalr.db.Delete(&domain.QaHide{}, id).Error
+	return
+}
+
+////Question Answer Later--------------------------------
+//Fetch ...
+func (qalr *qaAnswerLaterRepo) Fetch(ctx context.Context) ([]*domain.QaAnswerLater, error) {
+	qal := []*domain.QaAnswerLater{}
+	err := qalr.db.Find(&qal).Error
+	if err != nil {
+		return nil, err
+	}
+	return qal, nil
+}
+
+//Store ...
+func (qalr *qaAnswerLaterRepo) Store(ctx context.Context, qal *domain.QaAnswerLater) (err error) {
+	err = qalr.db.Create(&qal).Error
+	if err != nil {
+		return
+	}
+	return
+}
+
+//GetByID ...
+func (qalr *qaAnswerLaterRepo) GetByID(ctx context.Context, id uint) (qal *domain.QaAnswerLater, err error) {
+	qal = &domain.QaAnswerLater{}
+	err = qalr.db.First(&qal, id).Error
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+//Update ...
+func (qalr *qaAnswerLaterRepo) Update(ctx context.Context, qal *domain.QaAnswerLater) (err error) {
+	err = qalr.db.Save(&qal).Error
+	if err != nil {
+		return err
+	}
+	return
+}
+
+//Delete ...
+func (qalr *qaAnswerLaterRepo) Delete(ctx context.Context, id uint) (err error) {
+	err = qalr.db.Delete(&domain.QaAnswerLater{}, id).Error
 	return
 }

@@ -29,18 +29,18 @@ type QaHide struct {
 	DeletedAt    sql.NullTime `gorm:"index" json:"deleted_at"`
 }
 
-// QuestionAnswerLater ...
-type QuestionAnswerLater struct {
-	ID         uint `gorm:"primaryKey" json:"id"`
-	QuestionID uint
-	UserID     uint
-	CreatedAt  time.Time    `json:"created_at"`
-	UpdatedAt  time.Time    `json:"updated_at"`
-	DeletedAt  sql.NullTime `gorm:"index" json:"deleted_at"`
+// QaAnswerLater ...
+type QaAnswerLater struct {
+	ID           uint `gorm:"primaryKey" json:"id"`
+	QaQuestionID uint
+	UserID       uint
+	CreatedAt    time.Time    `json:"created_at"`
+	UpdatedAt    time.Time    `json:"updated_at"`
+	DeletedAt    sql.NullTime `gorm:"index" json:"deleted_at"`
 }
 
-// QuestionAnswerRequest ...
-type QuestionAnswerRequest struct {
+// QaAnswerRequest ...
+type QaAnswerRequest struct {
 	ID            uint         `gorm:"primaryKey" json:"id"`
 	RequestedByID uint         `json:"requestedById"`
 	RequestedToID uint         `json:"requestedToId"`
@@ -82,5 +82,23 @@ type QaHideRepo interface {
 	GetByID(ctx context.Context, id uint) (*QaHide, error)
 	Update(ctx context.Context, qah *QaHide) error
 	Store(ctx context.Context, qah *QaHide) error
+	Delete(ctx context.Context, id uint) error
+}
+
+// QaAnswerLaterUsecase ...
+type QaAnswerLaterUsecase interface {
+	Fetch(ctx context.Context) ([]*QaAnswerLater, error)
+	GetByID(ctx context.Context, id uint) (*QaAnswerLater, error)
+	Update(ctx context.Context, qal *QaAnswerLater) error
+	Store(ctx context.Context, qal *QaAnswerLater) error
+	Delete(ctx context.Context, id uint) error
+}
+
+//QaAnswerLaterRepo ...
+type QaAnswerLaterRepo interface {
+	Fetch(ctx context.Context) ([]*QaAnswerLater, error)
+	GetByID(ctx context.Context, id uint) (*QaAnswerLater, error)
+	Update(ctx context.Context, qal *QaAnswerLater) error
+	Store(ctx context.Context, qal *QaAnswerLater) error
 	Delete(ctx context.Context, id uint) error
 }
