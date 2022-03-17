@@ -12,6 +12,7 @@ import (
 func (r *mutationResolver) CreateQaReport(ctx context.Context, input model.NewQaReport) (*domain.QaReport, error) {
 	qar := inpToQRMod(input)
 	err := r.Di.QRc.Store(ctx, qar)
+
 	if err != nil {
 		return nil, err
 	}
