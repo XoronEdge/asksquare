@@ -1,0 +1,1 @@
+migrate -database ${ASKSQUARE_URL} -path migration down 1

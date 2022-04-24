@@ -1,0 +1,97 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  firstname: String
+  lastname: String
+  gender: String
+  phone: String!
+  password: String!
+  QaReport: [QaReport!]
+  QaHide: [QaHide!]
+}
+
+
+input NewUser {
+  id: ID!
+  username: String!
+  email: String!
+  firstname: String
+  lastname: String
+  gender: String
+  phone: String!
+  password: String!
+}
+
+
+type QaReport {
+  id: ID!
+  reason: String!
+  description: String!
+  questionId: ID!
+  user: User!
+}
+
+type QaHide {
+  id: ID!
+  hideByUser: Int!
+  questionId: ID!
+  user: User!
+}
+
+type QaAnswerLater {
+  id: ID!
+  questionId: ID!
+  user: User!
+}
+
+
+input NewQaReport {
+  id: ID!  
+  reason: String!
+  description: String!
+  questionId: Int!  
+}
+
+input NewQaHide {
+  id: ID!  
+  hideByUser: Int!
+  questionId: Int!  
+}
+
+input NewQaAnswerLater {
+  id: ID!  
+  questionId: Int!  
+}
+
+
+type Query {
+  users: [User!]!
+  user(id: ID!): User
+  QaReports(question_id: ID!): [QaReport!]!
+  QaReport(id: ID!): QaReport
+  QaHides(user_id: ID!): [QaHide!]!
+  QaHide(id: ID!): QaHide
+  QaAnswerLaters(user_id: ID!): [QaAnswerLater!]!
+  QaAnswerLater(id: ID!): QaAnswerLater
+}
+
+type Mutation {
+  createUser(input: NewUser!): User!
+  updateUser(id: ID!, input: NewUser!): User!
+  deleteUser(id: ID!): User!
+  createQaReport(input: NewQaReport!): QaReport!
+  updateQaReport(id: ID!, input: NewQaReport!): QaReport!
+  deleteQaReport(id: ID!): QaReport!
+  createQaHide(input: NewQaHide!): QaHide!
+  updateQaHide(id: ID!, input: NewQaHide!): QaHide!
+  deleteQaHide(id: ID!): QaHide!
+  createQaAnswerLater(input: NewQaAnswerLater!): QaAnswerLater!
+  updateQaAnswerLater(id: ID!, input: NewQaAnswerLater!): QaAnswerLater!
+  deleteQaAnswerLater(id: ID!): QaAnswerLater!
+}
+

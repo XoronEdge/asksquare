@@ -1,0 +1,40 @@
+version: '3.3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: LiveReload.Dockerfile
+    container_name: asksquare_api
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db    
+    env_file: 
+      - ./.env
+    volumes:
+      - ./:/app
+
+  db:
+    image: postgres
+    container_name: asksquarepostgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=asksquare
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pong
+      - DATABASE_HOST=db
+
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   container_name: pgadmin_asksquare
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: lala@gmail.com
+  #     PGADMIN_DEFAULT_PASSWORD: lala
+  #     GUNICORN_ACCESS_LOGFILE: ""
+  #   depends_on:
+  #     - db
+  #   ports:
+  #     - "5050:80"    
+  #   restart: unless-stopped
